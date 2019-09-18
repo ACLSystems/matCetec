@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+.page-header {
+  height: 100vh;
+  background-position: center center;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  align-items: center;
+}
