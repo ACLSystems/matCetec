@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '@app/app.module';
 import { MdModule } from '@md/md.module';
 import { DashboardRoutingModule } from './dashboard.routing';
+import { AccesoriesModule } from '@shared/accesories/accesories.module';
 
 import { DashboardComponent } from './dashboard.component';
 import { DemoComponent } from './demo/demo.component';
@@ -19,7 +20,8 @@ import { DemoComponent } from './demo/demo.component';
 		DashboardRoutingModule,
 		FormsModule,
 		MaterialModule,
-		MdModule
+		MdModule,
+		AccesoriesModule
   ]
 })
 export class DashboardModule { }

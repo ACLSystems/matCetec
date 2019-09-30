@@ -46,6 +46,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FixedpluginModule } from '@app/fixedplugin/fixedplugin.module';
 import { SidebarModule } from '@sidebar/sidebar.module';
 import { NavbarModule } from '@navbar/navbar.module';
+import { AccesoriesModule } from '@shared/accesories/accesories.module';
 
 // Import componentes
 import { AppComponent } from './app.component';
@@ -53,12 +54,14 @@ import { AppRoutingModule } from './app.routing.module';
 import { PagesComponent } from '@layouts/pages.component';
 import { LandingComponent } from '@layouts/landing.component';
 import { FooterComponent } from '@footer/footer.component';
+import { LoggedComponent } from '@layouts/logged.component';
+import { LoadingSpinnerComponent } from '@shared/spinners/loading.component';
+import { TestComponent } from './test/test.component';
 
 import { CommonService } from '@shared/services/common.service';
 import { UserService } from '@shared/services/user.service';
 import { PublicService } from '@shared/services/public.service';
 import { WindowService } from '@shared/services/windowSize.service';
-import { LoggedComponent } from '@layouts/logged.component';
 
 @NgModule({
 	exports: [
@@ -103,7 +106,8 @@ export class MaterialModule {}
 		PagesComponent,
 		FooterComponent,
 		LandingComponent,
-		LoggedComponent
+		LoggedComponent,
+		TestComponent
   ],
   imports: [
 		CommonModule,
@@ -116,7 +120,8 @@ export class MaterialModule {}
 		HttpClientModule,
 		SidebarModule,
 		FixedpluginModule,
-		NavbarModule
+		NavbarModule,
+		AccesoriesModule
   ],
 	providers: [
 		PublicService,

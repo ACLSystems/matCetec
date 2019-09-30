@@ -1,16 +1,7 @@
 <div class="main-content">
-	<div *ngIf="loading">
-	<div class="row text-center animated fadeIn">
-		<div class="col ">
-			<i class="fas fa-sync fa-spin fa-5x"></i>
-		</div>
+	<div *ngIf="loading" class="text-center">
+		<app-loading-spinner></app-loading-spinner>
 	</div>
-	<div class="row text-center">
-		<div class="col">
-			<h1>Cargando componentes ... </h1>
-		</div>
-	</div>
-</div>
 
 <div *ngIf="!loading" class="container">
 	<div *ngIf="identity">
@@ -88,6 +79,11 @@
 														<td>
 															<button mat-raised-button type="button"
 																class="btn btn-success btn-link "
+																(click)="getMyCourse(crs.curso.course,
+																	crs.curso.groupid,
+																	crs.curso.courseid,
+																	crs.curso.lastSeenBlock,
+																	crs.curso.firstBlock)"
 															>
 																<i class="material-icons">play_circle_filled</i>
 															</button>
@@ -162,6 +158,11 @@
 												<td>
 													<button mat-raised-button type="button"
 														class="btn btn-success btn-link "
+														(click)="getMyCourse(crs.curso.course,
+															crs.curso.groupid,
+															crs.curso.courseid,
+															crs.curso.lastSeenBlock,
+															crs.curso.firstBlock)"
 													>
 														<i class="material-icons">play_circle_filled</i>
 													</button>
@@ -234,6 +235,11 @@
 												<td>
 													<button mat-raised-button type="button"
 														class="btn btn-success btn-link"
+														(click)="getMyCourse(crs.curso.course,
+															crs.curso.groupid,
+															crs.curso.courseid,
+															crs.curso.lastSeenBlock,
+															crs.curso.firstBlock)"
 													>
 														<i class="material-icons">play_circle_filled</i>
 													</button>

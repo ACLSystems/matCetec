@@ -80,12 +80,31 @@ export class UsergroupsComponent implements OnInit {
 	/*
   Metodo para redireccionar al usuario al curso que selecciono
   */
-  public getMycourse(course: string, groupid: string, courseid: string, lastSeenBlock: string, firstBlock: string) {
-    if (!lastSeenBlock) {
-      this.router.navigate(['/user/mycourses', course, groupid, courseid, firstBlock]);
+  public getMyCourse(course: string, groupid: string, courseid: string, lastSeenBlock: string, firstBlock: string) {
+		var currentCourse = {
+			course: course,
+			groupid: groupid,
+			courseid: courseid,
+			block: ''
+		}
+		if (!lastSeenBlock) {
+			currentCourse.block = firstBlock;
+      // this.router.navigate(['/user/course', course, groupid, courseid, firstBlock]);
     } else {
-      this.router.navigate(['/user/mycourses', course, groupid, courseid, lastSeenBlock]);
+			currentCourse.block = lastSeenBlock;
+      // this.router.navigate(['/user/course', course, groupid, courseid, lastSeenBlock]);
     }
+		let navigate = [
+			'/user/course',
+			course,
+			groupid,
+			courseid,
+			currentCourse.block
+		]
+		console.log(navigate)
+		localStorage.setItem('currentCourse', JSON.stringify(currentCourse));
+		this.router.navigate(navigate);
+
   }
 
 }

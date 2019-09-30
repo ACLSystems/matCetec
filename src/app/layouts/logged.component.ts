@@ -34,6 +34,8 @@ export class LoggedComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
+		const body = document.getElementsByTagName('body')[0];
+		body.classList.remove('off-canvas-sidebar');
 		const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
 		const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
 		this.location.subscribe((ev:PopStateEvent) => {

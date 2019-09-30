@@ -6,6 +6,7 @@ import { AuthGuard } from '@shared/guards/auth.guard';
 import { PagesComponent } from '@layouts/pages.component';
 import { LandingComponent } from '@layouts/landing.component';
 import { LoggedComponent } from '@layouts/logged.component';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
 	{
@@ -72,6 +73,18 @@ const routes: Routes = [
 				loadChildren: () => import('./dashboard/calendar/calendar.module').then(mod => mod.CalendarModule)
 			}
 		]
+	},{
+		path: '',
+		canActivate: [AuthGuard],
+		children: [
+			{
+				path: 'exam',
+				loadChildren: () => import('./exam/exam.module').then(mod => mod.ExamModule)
+			}
+		]
+	},{
+		path: 'test',
+		component: TestComponent
 	},{
 		path: '**',
 		redirectTo: '/pages/error'

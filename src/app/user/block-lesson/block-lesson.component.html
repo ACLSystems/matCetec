@@ -1,0 +1,62 @@
+<div class="card">
+	<div
+		class="card-header card-header-text"
+		[ngClass]="{'card-header-danger': blockData.blockNumber==0, 'card-header-primary': blockData.blockNumber!=0}"
+		>
+		<div class="card-text">
+			<div class="card-title">
+				<h3>
+					{{blockData.blockTitle}}
+				</h3>
+				<div class="card-category">
+					<i class="material-icons" *ngIf="blockData.blockType=='textVideo' || blockData.blockType=='video'">
+						theaters</i>
+					<i class="material-icons" *ngIf="blockData.blockType=='text'">
+						label</i>
+					<i class="material-icons" *ngIf="blockData.blockType=='questionnarie'">
+						ballot</i>
+					<i class="material-icons" *ngIf="blockData.blockType=='task'">
+						create</i>
+					<span *ngIf="blockData.blockNumber==0">
+						Unidad {{blockData.blockSection}}
+					</span>
+					<span *ngIf="blockData.blockNumber!=0">
+						Lección {{blockData.blockSection}}.{{blockData.blockNumber}}
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		<div
+			class="video-container"
+			*ngIf="blockData.blockMedia.length > 0 && blockData.blockBegin">
+			<iframe
+				[src]="blockData.blockMedia | safe "
+				frameborder="0"
+				allow="autoplay; encrypted-media"
+				width="853"
+				height="480"
+				allowfullscreen
+				></iframe>
+		</div>
+		<div [innerHtml]="blockData.blockContent">
+		</div>
+		<div *ngIf="blockData.questionnarie">
+			<app-block-questionnarie [blockData]="blockData">
+			</app-block-questionnarie>
+		</div>
+		<div
+			class="video-container"
+			*ngIf="blockData.blockMedia.length > 0 && !blockData.blockBegin">
+			<iframe
+				[src]="blockData.blockMedia | safe"
+				frameborder="0"
+				allow="autoplay; encrypted-media"
+				width="853"
+				height="480"
+				allowfullscreen
+				></iframe>
+		</div>
+	</div>
+</div>

@@ -57,13 +57,33 @@ export class CalendarComponent implements OnInit {
 
 	loadEvents(){
 		this.loading = true;
+		const colorEvents = [
+			'event-azure',
+			'event-green',
+			'event-orange',
+			'event-red',
+			'event-azure',
+			'event-green',
+			'event-orange',
+			'event-red',
+			'event-azure',
+			'event-green',
+			'event-orange',
+			'event-red'
+		]
 		this.eventService.getEventSchedule().subscribe(res => {
+			var lastColor = '';
 			for (const id of res.message.groups){
+				let classColor = colorEvents[Math.floor(Math.random()*colorEvents.length)];
+				while (classColor == lastColor) {
+					classColor = colorEvents[Math.floor(Math.random()*colorEvents.length)];
+				}
+				lastColor = classColor;
 				this.calendarEvents.push({
 					title: 'curso: ' + id.name,
 					start: this.datePipe.transform(id.beginDate, 'yyyy-MM-dd'),
-					end: this.datePipe.transform(id.endDate, 'yyyy-MM-dd')
-					// color: environment.eventColor,
+					end: this.datePipe.transform(id.endDate, 'yyyy-MM-dd'),
+					className: classColor
 					// textColor: environment.textColor
 				});
 			}

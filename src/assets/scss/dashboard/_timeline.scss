@@ -131,6 +131,9 @@
         &.danger {
             @include timeline-badge-color($brand-danger);
         }
+				&.inverse {
+            @include timeline-badge-color($brand-inverse);
+        }
 
 
         [class^="ti-"],

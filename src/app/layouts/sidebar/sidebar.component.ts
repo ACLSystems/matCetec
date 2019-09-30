@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import PerfectScrollbar from 'perfect-scrollbar';
+
+import { StorageService } from '@shared/services/storage.service';
 
 declare const $: any;
 
@@ -20,8 +22,10 @@ export interface ChildrenItems {
 		type?: string;
 }
 
+
+
 //Menu Items
-export const ROUTES: RouteInfo[] = [{
+const ROUTES_1: RouteInfo[] = [{
 				path: '/dashboard',
 				title: 'Panel',
 				type: 'link',
@@ -31,39 +35,43 @@ export const ROUTES: RouteInfo[] = [{
 				title: 'Calendario',
 				type: 'link',
 				icontype: 'date_range'
-		},{
-				path: '/user/groups',
-				title: 'Mis cursos',
-				type: 'link',
-				icontype: 'library_books'
-		},{
-				path: '/forms',
+		}
+];
+
+const myCurrentCourseData = JSON.parse(localStorage.getItem('currentCourse'));
+
+export const myCurrentCourse: RouteInfo = {
+	path: myCurrentCourseData ? '/user' : '',
+	title: myCurrentCourseData ? `Curso ${myCurrentCourseData.courseCode}` : '',
+	type: myCurrentCourseData ? 'sub' : 'link',
+	icontype: 'library_books',
+	collapse: myCurrentCourseData ? 'user' : '',
+	children: myCurrentCourseData ? [
+		{path: 'content', title: 'Contenido del curso', ab: 'CC'},
+		{path: 'progress', title: 'Mi progreso', ab: 'MP'},
+		{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
+		{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
+		{path: 'announcements', title: 'Avisos del curso', ab: 'AC'},
+		{path: 'events', title: 'Eventos del curso', ab: 'EC'}
+	] : null
+}
+		// {
+		// 		path: '/user/course',
+		// 		title: 'Curso Actual',
+		// 		type: 'link',
+		// 		icontype: 'library_books'
+		// },
+
+const ROUTES_2: RouteInfo[] = [{
+				path: '/editor',
 				title: 'Editor',
-				type: 'sub',
-				icontype: 'content_paste',
-				collapse: 'forms',
-				children: [
-						{path: 'regular', title: 'Regular Forms', ab:'RF'},
-						{path: 'extended', title: 'Extended Forms', ab:'EF'},
-						{path: 'validation', title: 'Validation Forms', ab:'VF'},
-						{path: 'wizard', title: 'Wizard', ab:'W'}
-				]
+				type: 'link',
+				icontype: 'content_paste'
 		},{
-				path: '/tables',
-				title: 'Listados',
-				type: 'sub',
-				icontype: 'grid_on',
-				collapse: 'tables',
-				children: [
-						{path: 'regular', title: 'Regular Tables', ab:'RT'},
-						{path: 'extended', title: 'Extended Tables', ab:'ET'},
-						{path: 'datatables.net', title: 'Datatables.net', ab:'DT'}
-				]
-		},{
-				path: '/widgets',
+				path: '/admin',
 				title: 'Administrador',
 				type: 'link',
-				icontype: 'widgets'
+				icontype: 'settings_applications'
 		},{
 				path: '/charts',
 				title: 'Reportes',
@@ -72,30 +80,50 @@ export const ROUTES: RouteInfo[] = [{
 		}
 ];
 
+export const ROUTES: RouteInfo [] = myCurrentCourseData ?
+	[...ROUTES_1, myCurrentCourse, ...ROUTES_2] :
+	[...ROUTES_1, ...ROUTES_2]
+
+
 @Component({
 	selector: 'app-sidebar-cmp',
 	templateUrl: './sidebar.component.html',
 	styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
 
 	public menuItems: any[];
-		ps: any;
-		isMobileMenu() {
-				if ($(window).width() > 991) {
-						return false;
-				}
-				return true;
-		};
+	ps: any;
+	isMobileMenu() {
+			if ($(window).width() > 991) {
+					return false;
+			}
+			return true;
+	};
 
-	constructor() { }
+	constructor(
+		private storageService: StorageService
+	) {
+
+	}
 
 	ngOnInit() {
+		const body = document.getElementsByTagName('body')[0];
+		body.classList.remove('off-canvas-sidebar');
 		this.menuItems = ROUTES.filter(menuItem => menuItem);
 		if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
 				const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
 				this.ps = new PerfectScrollbar(elemSidebar);
 		}
+		this.refreshCourseData('currentCourse');
+		this.storageService.storageUpdate.subscribe((data:string) => {
+				this.refreshCourseData(data);
+			}
+		);
+	}
+
+	ngOnDestroy() {
+		//this.storageService.storageUpdate.unsubscribe();
 	}
 
 	updatePS(): void  {
@@ -109,5 +137,35 @@ export class SidebarComponent implements OnInit {
 					bool = true;
 			}
 			return bool;
+	}
+
+	refreshCourseData(data:string) {
+		if(data == 'currentCourse') {
+			const myCurrentCourseData = JSON.parse(localStorage.getItem('currentCourse'));
+			if(myCurrentCourseData) {
+				const myCurrentCourse: RouteInfo = {
+					path: myCurrentCourseData ? '/user' : '',
+					title: myCurrentCourseData ? `Curso ${myCurrentCourseData.courseCode}` : '',
+					type: myCurrentCourseData ? 'sub' : 'link',
+					icontype: 'library_books',
+					collapse: myCurrentCourseData ? 'user' : '',
+					children: myCurrentCourseData ? [
+						{
+							path: 'content/' + myCurrentCourseData.groupid,
+							title: 'Contenido del curso',
+							ab: 'CC'},
+						{path: 'progress', title: 'Mi progreso', ab: 'MP'},
+						{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
+						{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
+						{path: 'announcements', title: 'Avisos del curso', ab: 'AC'},
+						{path: 'events', title: 'Eventos del curso', ab: 'EC'}
+					] : null
+				}
+				var foundIndex = this.menuItems.findIndex(item => item.path == myCurrentCourse.path);
+				if(foundIndex > 0) {
+					this.menuItems[foundIndex] = myCurrentCourse;
+				}
+			}
+		}
 	}
 }

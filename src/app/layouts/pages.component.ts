@@ -26,7 +26,8 @@ export class PagesComponent implements OnInit {
 	}
 	ngOnInit(){
 		const navbar: HTMLElement = this.element.nativeElement;
-
+		const body = document.getElementsByTagName('body')[0];
+		body.classList.add('off-canvas-sidebar');
 		this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
 		this._router = this.router.events.pipe(
 			filter(event => event instanceof NavigationEnd))

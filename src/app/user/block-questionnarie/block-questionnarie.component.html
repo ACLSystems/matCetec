@@ -1,0 +1,70 @@
+<div *ngIf="blockData.questionnarie.maxAttempts > blockData.attempts">
+  <div class="alert alert-info">
+    <span><i class="material-icons md-light">warning</i> Has usado {{blockData.attempts}} de {{blockData.questionnarie.maxAttempts}} intentos permitidos</span>
+  </div>
+</div>
+
+<div *ngIf="blockData.questionnarie.maxAttempts == 1 && blockData.questionnarie.maxAttempts > blockData.attempts">
+  <div class="alert alert-warning">
+    <span><i class="material-icons md-dark">warning</i> Solo tienes un intento para realizar tu examen</span>
+  </div>
+</div>
+
+<div *ngIf="blockData.questionnarie.maxAttempts <= blockData.attempts">
+  <div class="alert alert-danger">
+    <span><i class="material-icons md-light">warning</i> Has agotado los intentos permitidos</span>
+  </div>
+</div>
+
+<button mat-raised-button
+	class="btn btn-sm brn-raised btn-danger"
+	data-toggle="modal"
+	data-target="#questionnarie"
+	data-backdrop="static"
+	>
+	Iniciar Examen
+</button>
+
+<button mat-raised-button
+	class="btn btn-sm brn-raised btn-danger"
+	(click)="goExam()"
+	>
+	Lanza Examen
+</button>
+
+<div class="modal fade" id="questionnarie" tabindex="-1" role="dialog" aria-labelledby="myQuestionnarie" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">{{blockData.groupCode}} {{blockData.blockSection}}.{{blockData.blockNumber}} {{blockData.blockTitle}}</h4>
+				<button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h4>Pregunta 1</h4>
+				<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
+
+			</div>
+			<div class="modal-footer">
+				{{now | date: 'medium' }} &nbsp;&nbsp;&nbsp;
+				<div class="btn-toolbar" role="toolbar">
+					<div class="btn-group" role="group">
+						<button
+							type="button"
+							class="btn btn-sm btn-raised btn-outline-primary"
+							>
+							<i class="material-icons">chevron_left</i> 0
+						</button>
+						<button
+							type="button"
+							class="btn btn-sm btn-outline-primary"
+							>
+							2 <i class="material-icons">chevron_right</i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

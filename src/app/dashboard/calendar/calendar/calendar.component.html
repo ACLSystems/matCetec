@@ -1,22 +1,25 @@
 <div class="main-content">
 	<div class="container-fluid">
-		<div class="row">
-			<div class="col ml-auto mr-auto text-center" *ngIf="loading" >
-				<div class="row animated fadeIn">
-					<div class="spinner-border m-5" role="status" style="width: 5rem; height: 5rem;">
-						<span class="sr-only">Cargando ...</span>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-10 col-sm-10 col-md-8 col-lg-6">
-						<h3 class="text-primary">Cargando componentes ... </h3>
-					</div>
-				</div>
-			</div>
+		<div class="row" *ngIf="loading">
+				<app-loading-spinner
+					class="col ml-auto mr-auto text-center">
+				</app-loading-spinner>
 		</div>
 		<div *ngIf="!loading" class="container">
 			<div class="row">
-				<div class="col-md-10 ml-auto mr-auto">
+				<div class="col-sm-12 col-md-11 col-lg-10 ml-auto mr-auto">
+					<div class="card">
+						<div class="card-header card-header-text card-header-primary">
+							<div class="card-text">
+								<h4 class="card-title">Calendario general de cursos</h4>
+								<p class="card-category">
+									Localiza aquí las fechas cuándo comienzan tus cursos y la duración de los mismos
+								</p>
+							</div>
+							<div class="card-body">
+							</div>
+						</div>
+					</div>
 					<full-calendar
 						locale="es"
 						[buttonText]="{
@@ -26,6 +29,12 @@
 							day: 'Día',
 							list: 'Lista'
 							}"
+						[buttonIcons]="{
+							prev: 'left-single-arrow',
+							next: 'right-single-arrow',
+							prevYear: 'left-double-arrow',
+							nextYear: 'right-double-arrow'
+						}"
 						defaultView="dayGridMonth"
 						allDayText="Todo el día"
 						[header]="{
