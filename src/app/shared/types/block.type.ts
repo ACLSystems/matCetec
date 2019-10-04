@@ -1,4 +1,22 @@
-export interface Options {
+export interface Result {
+	response: number,
+	responseString: string,
+	answer: number | string,
+	answerString: string,
+	type: string,
+	index?: number,
+	indexquestion?: number,
+	result: boolean,
+	points: number
+}
+
+export interface Response {
+	indexquestion: string,
+	result: Result[],
+	points?: number
+}
+
+export interface Option {
 	name: string,
 	value: string,
 	eval?: number
@@ -8,7 +26,7 @@ export interface Answer {
 	type: string,
 	index: number,
 	tf?: string,
-	group?: any[]
+	group?: string[] | any[]
 }
 
 export interface Question {
@@ -20,11 +38,12 @@ export interface Question {
 	group?: string[],
 	id: string,
 	label?:	string,
-	options?: Options[],
+	options?: Option[],
 	answers?: Answer[],
 	isVisible?: boolean,
 	help?: string,
 	type: string,
+	order?: boolean,
 	w: number
 }
 
@@ -61,7 +80,19 @@ export interface Questionnarie {
 	}
 }
 
+export interface Task {
+	header?: string,
+	footer?: string,
+	id: string,
+	label?: string,
+	text: string,
+	type: string,
+	files?: string[],
+	w?: number
+}
+
 export interface Block {
+	blockBegin?: boolean,
 	blockCode: string,
 	blockContent: string,
 	blockCurrentId: string,
@@ -83,5 +114,6 @@ export interface Block {
 	maxGrade?: number,
 	lastAttempt?: string | Date,
 	track?: number,
-	attempts?: number
+	attempts?: number,
+	tasks?: Task[]
 }

@@ -10,7 +10,7 @@ import { UserService } from '@shared/services/user.service';
 	templateUrl: './pages.component.html'
 })
 export class PagesComponent implements OnInit {
-	private token: string;
+	token: string;
 	private toggleButton: any;
 	private sidebarVisible: boolean;
 	mobile_menu_visible: any = 0;

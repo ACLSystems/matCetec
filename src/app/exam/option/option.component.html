@@ -1,0 +1,14 @@
+<mat-form-field>
+	<mat-select
+		placeholder="Selecciona una respuesta"
+		[(ngModel)]="selectedValue"
+		[id]="questionNumber"
+		>
+		<mat-option
+			*ngFor="let option of question.options"
+			[value]="option.value"
+			>
+			{{option.value}}
+		</mat-option>
+	</mat-select>
+</mat-form-field>

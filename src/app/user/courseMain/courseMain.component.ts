@@ -10,6 +10,8 @@ import { UserService } from '@shared/services/user.service';
 import { DocsService } from './docs.service';
 import { WindowService } from '@shared/services/windowSize.service';
 
+import { Section } from '@shared/types/section.type';
+
 registerLocaleData(localeMX);
 
 @Component({
@@ -29,7 +31,7 @@ export class CourseMainComponent implements OnInit {
 	loading: boolean = true;
 	groupid: string;
 	group: any;
-	sections: number[] = [];
+	sections: Section[] = [];
 	courseStarted: boolean = false;
 	track: number = 0;
 
@@ -64,8 +66,9 @@ export class CourseMainComponent implements OnInit {
 				this.router.navigate(['/dashboard']);
 			} else {
 				this.group = data.message;
+				// console.log(this.group);
 				this.sections = getUniques(this.group.blocks);
-				//console.log(this.group);
+				// console.log(this.sections);
 				this.track = parseInt(this.group.track.split('%')[0]);
 				//console.log(this.track);
 				this.loading = false;

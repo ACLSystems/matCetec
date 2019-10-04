@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Block, Questionnarie, Question } from '@shared/types/block.type';
 
@@ -11,7 +10,7 @@ import { Block, Questionnarie, Question } from '@shared/types/block.type';
 export class ExamComponent implements OnInit {
 
 	loading: boolean;
-	blockData: Block;
+	@Input() blockData: Block;
 	today: Date;
 	questionNumber: number;
 	question: Question;
@@ -20,25 +19,13 @@ export class ExamComponent implements OnInit {
 	prevButton: boolean;
 	selectedValue: string;
 
-	constructor(
-		private router: Router
-	) {
+	constructor() {
 		this.today = new Date();
 	}
 
 	ngOnInit() {
 		this.loading = true;
-		const data = JSON.parse(localStorage.getItem('tempBlock'));
-		if(data) {
-			this.blockData = data;
-			localStorage.removeItem('tempBlock');
-			this.initQuestions();
-			setTimeout(() => {
-				this.loading = false;
-			}, 2000);
-		} else {
-			this.router.navigate(['/']);
-		}
+		this.initQuestions();
 	}
 
 	initQuestions() {
@@ -77,6 +64,15 @@ export class ExamComponent implements OnInit {
 		} else {
 			this.prevButton = false;
 		}
+	}
+
+	getAnswer(
+			questionid: string,
+			optionid: string,
+			questionType: string,
+			mapId: string,
+			questionNumber: number) {
+
 	}
 
 }

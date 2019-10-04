@@ -20,6 +20,8 @@ export class LostPassComponent implements OnInit {
 	isPassOk: boolean = false;
 	login: Login;
   token: any;
+	type: string = "text";
+	show: boolean = false;
 
 	public messageSuccess: string;
   public messageError: string;
@@ -37,6 +39,8 @@ export class LostPassComponent implements OnInit {
 	if ( params.username !== null) {
 		this.emailuser = params.username;
 	}
+	this.type = "text";
+	this.show = false;
 });
 	}
 
@@ -76,6 +80,15 @@ export class LostPassComponent implements OnInit {
       }, error => {
         this.messageError = error;
       });
+    }
+  }
+
+	showPass() {
+    this.show = !this.show;
+    if (this.show) {
+      this.type = 'text';
+    } else {
+      this.type = 'password';
     }
   }
 

@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import PerfectScrollbar from 'perfect-scrollbar';
 
-import { StorageService } from '@shared/services/storage.service';
+import { CurrentCourse } from '@shared/types/course.type';
+
+import { CurrentCourseService } from '@shared/services/currentcourse.service';
 
 declare const $: any;
 
@@ -17,6 +20,7 @@ export interface RouteInfo {
 
 export interface ChildrenItems {
 		path: string;
+		subpath?: string;
 		title: string;
 		ab: string;
 		type?: string;
@@ -47,7 +51,7 @@ export const myCurrentCourse: RouteInfo = {
 	icontype: 'library_books',
 	collapse: myCurrentCourseData ? 'user' : '',
 	children: myCurrentCourseData ? [
-		{path: 'content', title: 'Contenido del curso', ab: 'CC'},
+		{path: 'content', title: 'Temario', ab: 'TM'},
 		{path: 'progress', title: 'Mi progreso', ab: 'MP'},
 		{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
 		{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
@@ -88,9 +92,14 @@ export const ROUTES: RouteInfo [] = myCurrentCourseData ?
 @Component({
 	selector: 'app-sidebar-cmp',
 	templateUrl: './sidebar.component.html',
-	styleUrls: ['./sidebar.component.scss']
+	styleUrls: ['./sidebar.component.scss'],
+	providers: [
+		CurrentCourseService
+	]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+
+	subscription: Subscription;
 
 	public menuItems: any[];
 	ps: any;
@@ -102,7 +111,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 	};
 
 	constructor(
-		private storageService: StorageService
+		private currentCourseService: CurrentCourseService
 	) {
 
 	}
@@ -115,15 +124,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
 				const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
 				this.ps = new PerfectScrollbar(elemSidebar);
 		}
-		this.refreshCourseData('currentCourse');
-		this.storageService.storageUpdate.subscribe((data:string) => {
+		this.refreshCourseData(null);
+		this.subscription = this.currentCourseService.getCurrentCourse.subscribe((data: CurrentCourse) => {
 				this.refreshCourseData(data);
 			}
 		);
 	}
 
 	ngOnDestroy() {
-		//this.storageService.storageUpdate.unsubscribe();
+		this.subscription.unsubscribe();
 	}
 
 	updatePS(): void  {
@@ -139,32 +148,36 @@ export class SidebarComponent implements OnInit, OnDestroy {
 			return bool;
 	}
 
-	refreshCourseData(data:string) {
-		if(data == 'currentCourse') {
-			const myCurrentCourseData = JSON.parse(localStorage.getItem('currentCourse'));
-			if(myCurrentCourseData) {
-				const myCurrentCourse: RouteInfo = {
-					path: myCurrentCourseData ? '/user' : '',
-					title: myCurrentCourseData ? `Curso ${myCurrentCourseData.courseCode}` : '',
-					type: myCurrentCourseData ? 'sub' : 'link',
-					icontype: 'library_books',
-					collapse: myCurrentCourseData ? 'user' : '',
-					children: myCurrentCourseData ? [
-						{
-							path: 'content/' + myCurrentCourseData.groupid,
-							title: 'Contenido del curso',
-							ab: 'CC'},
-						{path: 'progress', title: 'Mi progreso', ab: 'MP'},
-						{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
-						{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
-						{path: 'announcements', title: 'Avisos del curso', ab: 'AC'},
-						{path: 'events', title: 'Eventos del curso', ab: 'EC'}
-					] : null
-				}
-				var foundIndex = this.menuItems.findIndex(item => item.path == myCurrentCourse.path);
-				if(foundIndex > 0) {
-					this.menuItems[foundIndex] = myCurrentCourse;
-				}
+	refreshCourseData(data:CurrentCourse) {
+		if(!data) {
+			data = JSON.parse(localStorage.getItem('currentCourse'));
+		}
+		if(data) {
+			const myCurrentCourseData = data;
+			let contentPath = `content/${myCurrentCourseData.groupid}`;
+			// console.log(contentPath);
+			const myCurrentCourse: RouteInfo = {
+				path: myCurrentCourseData ? '/user' : '',
+				title: myCurrentCourseData ? `Curso ${myCurrentCourseData.courseCode}` : '',
+				type: myCurrentCourseData ? 'sub' : 'link',
+				icontype: 'library_books',
+				collapse: myCurrentCourseData ? 'user' : '',
+				children: myCurrentCourseData ? [
+					{
+						path: 'content',
+						subpath: myCurrentCourseData.groupid,
+						title: 'Temario',
+						ab: 'TM'},
+					{path: 'progress', title: 'Mi progreso', ab: 'MP'},
+					{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
+					{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
+					{path: 'announcements', title: 'Avisos del curso', ab: 'AC'},
+					{path: 'events', title: 'Eventos del curso', ab: 'EC'}
+				] : null
+			}
+			var foundIndex = this.menuItems.findIndex(item => item.path == myCurrentCourse.path);
+			if(foundIndex > 0) {
+				this.menuItems[foundIndex] = myCurrentCourse;
 			}
 		}
 	}

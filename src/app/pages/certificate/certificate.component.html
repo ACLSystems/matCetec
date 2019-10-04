@@ -73,7 +73,10 @@
 														<p>Folio: <span class="text-{{color}}">{{certificate.certificateNumber}}</span></p>
 													</div>
 													<div class="card-footer text-muted">
-														Constancia generada <b class="text-danger">{{certificate.passDate | timeAgo }}</b>
+														Constancia generada <b class="text-danger">
+															<!-- {{certificate.passDate | timeago:live }} -->
+															{{certificate.passDate | date: 'medium' }}
+														</b>
 													</div>
 												</div>
 											</div>

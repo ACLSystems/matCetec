@@ -1,0 +1,54 @@
+<div *ngIf="question.display.length != 0">
+	<div *ngFor="let itemmap of question.group;let indexopt = index;">
+		<div *ngFor="let ordercomp of question.display;let indexorder = index;">
+			<div *ngIf="indexorder == indexopt">
+				<div *ngIf="ordercomp == 0" class="row">
+					<div class="col-6">
+						<input
+							type="text"
+							class="form-control"
+							#answer
+							>
+					</div>
+					<div class="col-6">
+						<div class="alert alert-primary" role="alert">
+							<div [innerHTML]="itemmap"></div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="ordercomp == 1" class="row">
+					<div class="col-6">
+						<div class="alert alert-primary" role="alert">
+							<div [innerHTML]="itemmap"></div>
+						</div>
+					</div>
+					<div class="col-6">
+						<input
+							type="text"
+							class="form-control"
+							#answer
+							>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="question.display.length == 0">
+	<div class="row" *ngFor="let itemmap of question.group;let idquestion = index;">
+		<div class="col-6">
+			<div class="alert alert-primary" role="alert">
+				<div [innerHTML]="itemmap"></div>
+			</div>
+		</div>
+		<div class="col-6">
+			<input
+				type="text"
+				placeholder="Coloca tu respuesta"
+				class="form-control"
+				#answer
+				>
+		</div>
+	</div>
+</div>

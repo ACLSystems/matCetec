@@ -43,10 +43,11 @@ export class BlockComponent implements OnInit {
 		.subscribe(data => {
 			if(data) {
 				this.blockData = data.message;
-				console.log(this.blockData);
 				this.track = this.blockData.track;
 				this.loading = false;
 				window.scroll(0,0)
+				// console.log('block')
+				// console.log(this.blockData);
 			}
 		})
 	}

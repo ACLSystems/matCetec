@@ -5,9 +5,11 @@ import { registerLocaleData } from '@angular/common';
 import localeMX from '@angular/common/locales/es-MX';
 //import * as Chartist from 'chartist';
 
+import { CurrentCourse } from '@shared/types/course.type';
+
 import { UserService } from '@shared/services/user.service';
 import { UserCourseService } from '@shared/services/userCourse.service';
-import { StorageService } from '@shared/services/storage.service';
+import { CurrentCourseService } from '@shared/services/currentcourse.service';
 
 import { environment } from '@env/environment';
 
@@ -26,6 +28,7 @@ interface dashEvent {
 	providers: [
 		UserService,
 		UserCourseService,
+		CurrentCourseService,
 		{ provide: LOCALE_ID, useValue: 'es-MX'}
 	]
 })
@@ -46,7 +49,7 @@ export class DashboardComponent implements OnInit {
 		private router: Router,
 		private userService: UserService,
 		private userCourseService: UserCourseService,
-		private storageService: StorageService
+		private currentCourseService: CurrentCourseService
 	) {
 		this.identity = this.userService.getidentity();
 		this.token = this.userService.getToken();
@@ -123,7 +126,7 @@ export class DashboardComponent implements OnInit {
 	Metodo para redireccionar al usuario al curso que seleccionó
 	*/
 	public getMyCourse(course: string, courseCode: string, groupid: string, courseid: string, lastSeenBlock: string, firstBlock: string) {
-		var currentCourse = {
+		var currentCourse: CurrentCourse = {
 			course: course,
 			courseCode: courseCode,
 			groupid: groupid,
@@ -132,7 +135,7 @@ export class DashboardComponent implements OnInit {
 		}
 		currentCourse.block = lastSeenBlock ? lastSeenBlock : firstBlock;
 		localStorage.setItem('currentCourse', JSON.stringify(currentCourse));
-		this.storageService.storageUpdate.next('currentCourse');
+		this.currentCourseService.sendCurrentCourse(currentCourse);
 		// let navigate = [
 		// 	'/user/course',
 		// 	course,

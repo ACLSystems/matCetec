@@ -210,17 +210,21 @@ export class NavbarComponent implements OnInit {
 			} else if (this.listTitles[i].type === "sub") {
 				for (let j = 0; j < this.listTitles[i].children.length; j++) {
 					let subtitle = this.listTitles[i].path + '/' + this.listTitles[i].children[j].path;
-					// console.log(subtitle)
+					//console.log(subtitle)
 					// console.log(titlee)
+					const currentCourse = JSON.parse(localStorage.getItem('currentCourse'));
 					if (subtitle === titlee) {
 						return this.listTitles[i].children[j].title;
 					} else if (titlee.includes(subtitle)){
-						const currentCourse = JSON.parse(localStorage.getItem('currentCourse'));
 						if(currentCourse) {
 							return currentCourse.course
 						} else {
 							return 'Panel'
 						}
+					} else if(titlee.includes('/user/block')) {
+						return currentCourse.course
+					} else {
+						return 'Panel'
 					}
 				}
 			}
@@ -228,7 +232,12 @@ export class NavbarComponent implements OnInit {
 		return 'Panel';
 	}
 	getPath() {
-			return this.location.prepareExternalUrl(this.location.path());
+		const currentCourse = JSON.parse(localStorage.getItem('currentCourse'));
+		if(currentCourse && this.location.path().includes('/user/block')) {
+			return this.location.prepareExternalUrl(`/user/content/${currentCourse.groupid}`);
+		} else {
+		return this.location.prepareExternalUrl(this.location.path());
+		}
 	}
 
 }

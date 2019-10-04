@@ -2,7 +2,9 @@ import { Component, OnInit, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { interval, Subscription, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+//import { TimeagoIntl } from 'ngx-timeago';
 import localeMx from '@angular/common/locales/es-MX';
+//import { strings as spanishStrings } from 'ngx-timeago/language-strings/es';
 
 registerLocaleData(localeMx, 'es-Mx');
 
@@ -50,8 +52,11 @@ export class CertificateComponent implements OnInit {
 
   constructor(
 		private pagesService: PagesService,
-		private userService: UserService
+		private userService: UserService,
+		//intl: TimeagoIntl
 	) {
+		// intl.strings = spanishStrings;
+		// intl.changes.next();
 		this.captchaSiteKey = environment.captchaSiteKey;
 		this.instanceTitle = environment.instanceTitle;
 		this.color = environment.color;

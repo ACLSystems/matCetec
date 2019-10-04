@@ -32,7 +32,12 @@ export class HomeComponent implements OnInit {
 		private pagesService:PagesService,
 		private userService: UserService
 	) {
-		this.Meta.addTag({name:'description', content:'Supérate Mexico es una iniciativa de capacitación en línea que te ayuda en tu desarrollo profesional, adquiriendo nuevas competencias y dándole valor a tus conocimientos'});
+		this.Meta.addTag(
+			{
+				name:'description',
+				content:'Supérate Mexico es una iniciativa de capacitación en línea que te ayuda en tu desarrollo profesional, adquiriendo nuevas competencias y dándole valor a tus conocimientos'
+			}
+		);
 	}
 
 	ngOnInit() {
@@ -80,7 +85,7 @@ export class HomeComponent implements OnInit {
 	}
 
 	@HostListener('window:scroll', ['$event'])
-	scrollHandler() {
+	scrollHandler(event?:any) {
 		let pos = document.documentElement.scrollTop;
 		let $navbar = document.getElementsByClassName('navbar')[0];
 		if(pos > 100){

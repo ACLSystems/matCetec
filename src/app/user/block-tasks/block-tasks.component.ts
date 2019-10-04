@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { Block, Task } from '@shared/types/block.type';
 
 @Component({
   selector: 'app-block-tasks',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlockTasksComponent implements OnInit {
 
-  constructor() { }
+	@Input() tasks: Task[];
+	textareaValue: string = '';
 
-  ngOnInit() {
-  }
+	currentFileUpload: File;
+	progress: {
+		percentage: number,
+		status: string,
+		statusAlert: string,
+		icon: string
+	} = {
+		percentage: 0,
+		status: 'Cargando...',
+		statusAlert: 'alert-info',
+		icon: 'fas fa-info-circle'
+	};
+
+	constructor() {}
+
+	ngOnInit() {}
 
 }

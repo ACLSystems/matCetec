@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RECAPTCHA_LANGUAGE, RecaptchaModule } from 'ng-recaptcha';
-import { TimeAgoPipe } from 'time-ago-pipe';
+//import { TimeagoModule } from 'ngx-timeago';
 import { FormsModule } from '@angular/forms';
 
 import { MaterialModule } from '@app/app.module';
@@ -29,7 +29,7 @@ import { LogoutComponent } from './logout/logout.component';
 		ErrorPageComponent,
 		HelpComponent,
 		CertificateComponent,
-		TimeAgoPipe,
+		//TimeagoModule,
 		LoginComponent,
 		PrivacyComponent,
 		CatalogComponent,

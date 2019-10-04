@@ -75,7 +75,9 @@
 										<i class="fas fa-sign-in-alt"></i> Entrar</button>
 				          <button *ngIf="dataIsOk"
 										type="button" class="btn btn-success btn-block"
-										(click)="getlogin(username.value, password.value)">
+										(click)="getlogin()"
+										(keydown.enter)="getlogin()"
+										>
 				            <i [ngClass]=" { 'fa-key':!loading, 'fa-sync fa-spin':loading }" class="fa"></i>
 				            <span *ngIf="!loading"> Entrar</span>
 				            <span *ngIf="loading"> Procesando</span>

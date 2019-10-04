@@ -18,12 +18,12 @@ export class HelpComponent implements OnInit {
   }
 
 	@HostListener('window:resize', ['$event'])
-	onResize(event:any) {
+	onResize(event?:any) {
 		this.width = this.windowService.windowRef.innerWidth;
 	}
 
 	@HostListener('window:scroll', ['$event'])
-	scrollHandler() {
+	scrollHandler(event?: any) {
 		let pos = document.documentElement.scrollTop;
 		let $navbar = document.getElementsByClassName('navbar')[0];
 		if(pos > 50){
