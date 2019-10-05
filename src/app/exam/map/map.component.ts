@@ -28,7 +28,14 @@ export class MapComponent implements OnInit {
 		this.results = Array(this.question.group.length);
 	}
 
+	/*
+	-option- es el valor de la opción elegida,
+	-optionMapId- es el índice de la opción elegida
+	-mapId- es el índice de la pregunta dentro del mapa
+	*/
 	getUserResponse(option: Option, optionMapId: number, mapId: number) {
+		// console.log(option);
+		// console.log(optionMapId);
 		let answers = Array(this.question.options.length);
 		if(this.question.answers &&
 			this.question.answers.length === 1 &&

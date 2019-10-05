@@ -126,14 +126,21 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 			let totalQuestions = 0;
 			if(questions.length > 0) {
 				for(let i=0; i < questions.length; i++){
-					this.pointsPerQuestion[i]= questions[i].group.length * questions[i].w;
-					totalQuestions += questions[i].group.length;
+					if(questions[i].type === 'map'){
+						this.pointsPerQuestion[i] =  questions[i].group.length * questions[i].w;
+						totalQuestions += questions[i].group.length;
+					} else if (questions[i].type === 'option') {
+						this.pointsPerQuestion[i] = questions[i].w;
+						totalQuestions++;
+					} else {
+
+					}
 				}
 				this.totalQuestions = totalQuestions;
-				// console.log(this.pointsPerQuestion);
 				this.totalPoints = this.pointsPerQuestion.reduce((acc,cur) => {
 					return acc + cur;
 				});
+				// console.log(this.pointsPerQuestion);
 				// console.log(this.totalPoints);
 			}
 		}

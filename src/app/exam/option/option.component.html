@@ -3,9 +3,10 @@
 		placeholder="Selecciona una respuesta"
 		[(ngModel)]="selectedValue"
 		[id]="questionNumber"
+		(selectionChange)="getUserResponse();"
 		>
 		<mat-option
-			*ngFor="let option of question.options"
+			*ngFor="let option of question.options; let optionId = index;"
 			[value]="option.value"
 			>
 			{{option.value}}
