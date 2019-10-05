@@ -124,6 +124,9 @@
     &.bg-primary{
         @include navbar-colors($bg-primary, $white-color);
     }
+		&.bg-white{
+        @include navbar-colors($white-color, $bg-primary);
+    }
     &.bg-info{
         @include navbar-colors($bg-info, $white-color);
     }

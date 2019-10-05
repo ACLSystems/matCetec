@@ -55,7 +55,7 @@ import { PagesComponent } from '@layouts/pages.component';
 import { LandingComponent } from '@layouts/landing.component';
 import { FooterComponent } from '@footer/footer.component';
 import { LoggedComponent } from '@layouts/logged.component';
-import { LoadingSpinnerComponent } from '@shared/spinners/loading.component';
+// import { LoadingSpinnerComponent } from '@shared/spinners/loading.component';
 import { TestComponent } from './test/test.component';
 
 import { CommonService } from '@shared/services/common.service';

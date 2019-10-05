@@ -17,10 +17,16 @@ export class MapComponent implements OnInit {
 	@Input() question: Question;
 	results: Result[]=[];
 	response: Response;
+	// subscription: Subscription;
 
 	constructor(
 		private questionService: QuestionService
-	) { }
+	) {
+		// this.subscription = this.questionService.showResults
+		// .subscribe(response => {
+		//
+		// });
+	}
 
 	ngOnInit() {
 		// console.log('mapComponent')

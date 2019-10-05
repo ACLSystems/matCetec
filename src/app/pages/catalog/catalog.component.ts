@@ -52,14 +52,13 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-
 	}
 
 	ngAfterViewInit() {
 		let $navbar = document.getElementsByClassName('navbar')[0];
 		$navbar.classList.remove('navbar-transparent');
-		$navbar.classList.remove('bg-primary');
-		$navbar.classList.add('bg-white');
+		// $navbar.classList.remove('bg-primary');
+		// $navbar.classList.add('bg-white');
 	}
 
 	public getCourseList(){

@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { LoadingSpinnerComponent } from '@shared/spinners/loading.component';
+import { SharedFooterComponent } from '@shared/footer/footer.component';
 
 @NgModule({
   declarations: [
-		LoadingSpinnerComponent
+		LoadingSpinnerComponent,
+		SharedFooterComponent
 	],
   imports: [
-    CommonModule
+    CommonModule,
+		RouterModule
   ],
 	exports: [
-		LoadingSpinnerComponent
+		LoadingSpinnerComponent,
+		SharedFooterComponent
 	]
 })
 export class AccesoriesModule { }
