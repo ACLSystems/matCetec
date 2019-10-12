@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { Block, Questionnarie, Question, Response } from '@shared/types/block.type';
 
 import { QuestionService } from '@shared/services/question.service';
+import { UserCourseService } from '@shared/services/userCourse.service';
+
 
 @Component({
 	selector: 'app-block-questionnarie',
@@ -15,7 +17,9 @@ import { QuestionService } from '@shared/services/question.service';
 })
 export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 
-	@Input() blockData: Block;
+	@Input() blockData:Block;
+	@Input() groupid: string;
+	@Input() blockid: string;
 	attempts: number;
 	questionnarie: Questionnarie;
 	responses: Response[] = [];
@@ -31,7 +35,8 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private router: Router,
-		private questionService: QuestionService
+		private questionService: QuestionService,
+		private userCourseService: UserCourseService
 	) {
 
 		this.subscription = this.questionService.getResponse
@@ -46,6 +51,7 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 		this.questionnarie = this.blockData.questionnarie;
 		// console.log('blockQuestionnarie');
 		// console.log(this.questionnarie);
+		console.log(this.blockid);
 		this.resetPoints();
 		this.getMaxPoints();
 	}
@@ -87,49 +93,56 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 				let now = new Date();
 				let grade = this.totalAnswered / this.totalPoints * 100;
 				grade = Math.round((grade + 0.00001) * 100) / 100;
-				let identity = JSON.parse(localStorage.getItem('identity'));
-				let responseHeader = '<h2>Calificación</h1><hr>' +
-				`Participante: <span class=text-primary>${identity.person.name} ${identity.person.fatherName} ${identity.person.motherName}</span><br>`;
-				let responseBody =
-				`Código de curso: <span class="text-primary">${this.blockData.courseCode}</span><br>` +
-				`Lección: <span class="text-primary">${this.blockData.blockSection}.${this.blockData.blockNumber} ${this.blockData.blockTitle}</span><hr>`+
-				`Total de aciertos: <span class="text-primary">${this.totalAnswered}</span>/${this.totalPoints}<br>` +
-				`Calificación: <span class="text-primary">${grade}</span><hr>`;
-				let months = [
-					'Enero',
-					'Febrero',
-					'Marzo',
-					'Abril',
-					'Mayo',
-					'Junio',
-					'Julio',
-					'Agosto',
-					'Septiembre',
-					'Octubre',
-					'Noviembre',
-					'Diciembre'
-				];
-				let responseFooter = `${now.getDate()} de ${months[now.getMonth()]} del ${now.getFullYear()} &nbsp;  ${now.getHours()}:${now.getMinutes()}`
-				Swal.fire({
-					html: responseHeader +
-					responseBody +
-					responseFooter
-				})
+				this.userCourseService.setAttempt(this.groupid, this.blockid, this.responses, grade).subscribe(data => {
+					console.log(data);
+					let identity = JSON.parse(localStorage.getItem('identity'));
+					let responseHeader = '<h2>Calificación</h1><hr>' +
+					`Participante: <span class=text-primary>${identity.person.name} ${identity.person.fatherName} ${identity.person.motherName}</span><br>`;
+					let responseBody =
+					`Código de curso: <span class="text-primary">${this.blockData.courseCode}</span><br>` +
+					`Lección: <span class="text-primary">${this.blockData.blockSection}.${this.blockData.blockNumber} ${this.blockData.blockTitle}</span><hr>`+
+					`Total de aciertos: <span class="text-primary">${this.totalAnswered}</span>/${this.totalPoints}<br>` +
+					`Calificación: <span class="text-primary">${grade}</span><hr>`;
+					let months = [
+						'Enero',
+						'Febrero',
+						'Marzo',
+						'Abril',
+						'Mayo',
+						'Junio',
+						'Julio',
+						'Agosto',
+						'Septiembre',
+						'Octubre',
+						'Noviembre',
+						'Diciembre'
+					];
+					let responseFooter = `${now.getDate()} de ${months[now.getMonth()]} del ${now.getFullYear()} &nbsp;  ${now.getHours()}:${now.getMinutes()}`
+					Swal.fire({
+						html: responseHeader +
+						responseBody +
+						responseFooter
+					});
+				}, error => {
+					console.log(error);
+				});
 			}
 		})
-		this.questionService.printResults(true);
+		//this.questionService.printResults(true);
 	}
 
 	getMaxPoints() {
 		if(this.questionnarie) {
 			let questions: Question[] = this.questionnarie.questions;
+			// console.log(questions);
 			let totalQuestions = 0;
 			if(questions.length > 0) {
 				for(let i=0; i < questions.length; i++){
-					if(questions[i].type === 'map'){
+					if(questions[i].type === 'map' ||
+					questions[i].type === 'group'){
 						this.pointsPerQuestion[i] =  questions[i].group.length * questions[i].w;
 						totalQuestions += questions[i].group.length;
-					} else if (questions[i].type === 'option') {
+					} else if (questions[i].type === 'option' || questions[i].type === 'tf') {
 						this.pointsPerQuestion[i] = questions[i].w;
 						totalQuestions++;
 					} else {
@@ -200,8 +213,9 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 			return acc + cur;
 		})
 		// console.log(this.questionsAnswered);
-		console.log(`Points ${this.totalAnswered} / ${this.totalPoints}. Questions responded: ${this.totalQuestionsAnswered} / ${this.totalQuestions}`);
-		console.log(this.responses);
+		// console.log(`Points ${this.totalAnswered} / ${this.totalPoints}. Questions responded: ${this.totalQuestionsAnswered} / ${this.totalQuestions}`);
+		// console.log(this.responses);
+		// console.log(sumPoints);
 	}
 
 }

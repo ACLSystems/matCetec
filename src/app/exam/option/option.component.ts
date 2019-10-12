@@ -29,37 +29,37 @@ export class OptionComponent implements OnInit {
 	/*
 	Aquí solo tomamos selectedValue
 	*/
-	getUserResponse() {
+	getUserResponse(selectedValue: string, optionId: number) {
+		// console.log(selectedValue);
+		// console.log(optionId);
 		let question = this.question;
-		// console.log(question);
-		// console.log(this.selectedValue);
-		let findResponseIndex = question.options.findIndex(opt => opt.value === this.selectedValue);
-		// console.log(findResponseIndex);
+		// let findResponseIndex = question.options.findIndex(opt => opt.value === this.selectedValue);
+		// // console.log(findResponseIndex);
 		let selectedOption: boolean = false;
 		if(question.answers && question.answers.length === 1) {
-			if(question.answers[0].index === findResponseIndex) {
+			if(question.answers[0].index === optionId) {
 				selectedOption = true;
 			}
 		}
-		// console.log(selectedOption);
-		// [0] porque no hay map aquí, es una sola opción
+		// // console.log(selectedOption);
+		// // [0] porque no hay map aquí, es una sola opción
 		this.results[0] = {
 			answer: question.answers[0].index,
 			answerString: this.question.options[question.answers[0].index].value,
-			response: findResponseIndex,
-			responseString: this.selectedValue,
+			response: optionId,
+			responseString: selectedValue,
 			type: question.type,
 			index: 0,
 			indexquestion: this.questionNumber,
 			result: selectedOption,
-			points: question.w
+			points: selectedOption ? question.w : 0
 		}
-		// console.log(this.results);
+		// // console.log(this.results);
 		this.response = {
 			indexquestion: question.id,
 			result: this.results
 		}
-		this.questionService.sendResponse(this.response)
+		this.questionService.sendResponse(this.response);
 	}
 
 }

@@ -4,7 +4,11 @@
 	</div>
 	<div *ngIf="!loading">
 		<!-- Bloque para la lección -->
-		<app-block-lesson [blockData]="blockData">
+		<app-block-lesson
+			[blockData]="blockData"
+			[groupid]="groupid"
+			[blockid]="blockid"
+		>
 		</app-block-lesson>
 		<!-- bloque de navegación. Lo colocaremos al final, que es donde se requiere -->
 		<div class="container">

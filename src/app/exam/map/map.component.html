@@ -6,8 +6,8 @@
 					<div [innerHTML]="map"></div>
 				</div>
 				<div class="card-body">
-					<form class="form-inline ">
-						<div class="form-group" *ngFor="let option of question.options;let optionMapId = index">
+					<div class="form-check form-check-radio" *ngFor="let option of question.options;let optionMapId = index">
+						<label class="form-check-label">
 							<input
 								class="form-check-input"
 								type="radio"
@@ -15,9 +15,12 @@
 								value="{{option.value}}"
 								(change)="getUserResponse(option, optionMapId, mapId);"
 							>
-							<label class="form-control-plaintext">{{option.value}}</label>
-						</div>
-					</form>
+							{{option.value}}
+							<span class="circle">
+								<span class="check"></span>
+							</span>
+						</label>
+					</div>
 				</div>
 			</div>
 		</div>

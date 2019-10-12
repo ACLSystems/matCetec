@@ -96,6 +96,29 @@ export class UserCourseService {
 	}
 
 	/*
+  guardar las calificaciones del alumno en el mongodb
+  */
+  setAttempt(
+		groupid: string,
+		blockid: string, 
+		answers: any[],
+		grade: number
+	):Observable<any>{
+		const params = JSON.stringify({
+			groupid: groupid,
+			blockid: blockid,
+			answers: answers,
+			grade: grade
+		});
+		const headers = JSONHeaders.set(
+			'Authorization',
+			'Bearer ' + this.commonService.getToken()
+		);
+		const route = this.url+'api/v1/user/createattempt';
+    return this.http.put(route, params, {headers});
+  }
+
+	/*
 	Metodo para obtener los recursos de un curso
 	*/
 	getResources(groupid:string):Observable<any>{

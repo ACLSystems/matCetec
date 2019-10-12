@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { HomeGuard } from '@shared/guards/home.guard';
+
 import { HomeComponent } from './home/home.component';
 import { ErrorPageComponent } from './error/error-page.component';
 import { HelpComponent } from './help/help.component';
@@ -19,9 +21,11 @@ const pageRoutes: Routes = [
 		children: [
 			{
 				path: '',
+				canActivate: [HomeGuard],
 				component: HomeComponent
 			},{
 				path: 'home',
+				canActivate: [HomeGuard],
 				component: HomeComponent
 			},{
 				path: 'certificate',

@@ -6,7 +6,7 @@ import * as jwt from 'jwt-decode';
 import { UserService } from '@shared/services/user.service';
 
 @Injectable({providedIn: 'root'})
-export class AuthGuard implements CanActivate {
+export class HomeGuard implements CanActivate {
 
 	token: string;
 
@@ -31,17 +31,19 @@ export class AuthGuard implements CanActivate {
 				const now = new Date();
 				exp.setMilliseconds(tokenDecoded.exp);
 				var diffDays = Math.round(Math.abs((exp.getTime() - now.getTime())/oneDay));
+				console.log(diffDays);
 				if(diffDays > minDays) {
-					return true;
+					return this.router.createUrlTree(['/dashboard']);;
 				} else {
 					console.log(`Te quedan ${diffDays} de expiración... mejor ve a login`);
 					return this.router.createUrlTree(['/pages/login']);
 				}
 			} catch (err) {
-				return this.router.createUrlTree(['/pages/login']);
+				//return this.router.createUrlTree(['/pages/login']);
+				return true;
 			}
 		} else {
-			return this.router.createUrlTree(['/pages/login']);
+			return true;
 		}
 
 	}

@@ -1,15 +1,16 @@
-<mat-form-field>
-	<mat-select
-		placeholder="Selecciona una respuesta"
-		[(ngModel)]="selectedValue"
-		[id]="questionNumber"
-		(selectionChange)="getUserResponse();"
+<div class="form-check form-check-radio" *ngFor="let option of question.options;let optionMapId = index">
+	<label class="form-check-label">
+		<input
+			class="form-check-input"
+			type="radio"
+			[id]="questionNumber"
+			[name]="questionNumber"
+			value="{{option.value}}"
+			(change)="getUserResponse(option.value,optionMapId);"
 		>
-		<mat-option
-			*ngFor="let option of question.options; let optionId = index;"
-			[value]="option.value"
-			>
-			{{option.value}}
-		</mat-option>
-	</mat-select>
-</mat-form-field>
+		{{option.value}}
+		<span class="circle">
+			<span class="check"></span>
+		</span>
+	</label>
+</div>

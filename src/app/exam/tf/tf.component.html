@@ -1,24 +1,12 @@
-<div class="form-check">
-	<input
-		class="form-check-input"
-		type="radio"
-		[name]="questionNumber"
-		id="questionNumber"
-		value="true"
-	>
-	<label class="form-check-label" for="questionNumber">
+<div class="togglebutton">
+	<label>
+		Falso &nbsp;
+		<input
+			type="checkbox"
+			[(ngModel)]="selectedValue"
+			(change)="getUserResponse();"
+		>
+		<span class="toggle"></span>
 		Verdadero
-	</label>
-</div>
-<div class="form-check">
-	<input
-		class="form-check-input"
-		type="radio"
-		[name]="questionNumber"
-		id="questionNumber"
-		value="false"
-	>
-	<label class="form-check-label" for="questionNumber">
-		Falso
 	</label>
 </div>

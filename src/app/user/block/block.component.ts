@@ -43,6 +43,7 @@ export class BlockComponent implements OnInit {
 		.subscribe(data => {
 			if(data) {
 				this.blockData = data.message;
+				this.blockid = blockid;
 				this.track = this.blockData.track;
 				this.loading = false;
 				window.scroll(0,0)

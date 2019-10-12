@@ -1,8 +1,8 @@
 export interface Result {
-	response: number,
-	responseString: string,
-	answer: number | string,
-	answerString: string,
+	response: number | boolean | string | string [],
+	responseString: string | string [],
+	answer: number | string | boolean | string [],
+	answerString: string | string [],
 	type: string,
 	index?: number,
 	indexquestion?: number,

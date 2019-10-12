@@ -8,7 +8,9 @@ import { Block } from '@shared/types/block.type';
 })
 export class BlockLessonComponent implements OnInit {
 
-	@Input()  blockData:Block;
+	@Input() blockData:Block;
+	@Input() groupid: string;
+	@Input() blockid: string;
 	track: number;
 
   constructor() { }

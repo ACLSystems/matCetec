@@ -65,7 +65,11 @@
 		<div [innerHtml]="blockData.blockContent">
 		</div>
 		<div *ngIf="blockData.questionnarie">
-			<app-block-questionnarie [blockData]="blockData">
+			<app-block-questionnarie
+				[blockData]="blockData"
+				[groupid]="groupid"
+				[blockid]="blockid"
+			>
 			</app-block-questionnarie>
 		</div>
 		<div *ngIf="blockData.tasks">

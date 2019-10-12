@@ -1,25 +1,26 @@
-<div *ngIf="question.display.length != 0">
-	<div *ngFor="let itemmap of question.group;let indexopt = index;">
+<div *ngIf="question.display.length > 0">
+	<div *ngFor="let map of question.group;let idquestion = index;">
 		<div *ngFor="let ordercomp of question.display;let indexorder = index;">
-			<div *ngIf="indexorder == indexopt">
+			<div *ngIf="indexorder == idquestion">
 				<div *ngIf="ordercomp == 0" class="row">
 					<div class="col-6">
 						<input
 							type="text"
 							class="form-control"
 							#answer
+							(blur)="getUserResponse(answer.value, idquestion)"
 							>
 					</div>
 					<div class="col-6">
 						<div class="alert alert-primary" role="alert">
-							<div [innerHTML]="itemmap"></div>
+							<div [innerHTML]="map"></div>
 						</div>
 					</div>
 				</div>
 				<div *ngIf="ordercomp == 1" class="row">
 					<div class="col-6">
 						<div class="alert alert-primary" role="alert">
-							<div [innerHTML]="itemmap"></div>
+							<div [innerHTML]="map"></div>
 						</div>
 					</div>
 					<div class="col-6">
@@ -27,6 +28,8 @@
 							type="text"
 							class="form-control"
 							#answer
+							placeholder="Escribe tu respuesta"
+							(blur)="getUserResponse(answer.value, idquestion)"
 							>
 					</div>
 				</div>
@@ -36,19 +39,20 @@
 </div>
 
 <div *ngIf="question.display.length == 0">
-	<div class="row" *ngFor="let itemmap of question.group;let idquestion = index;">
+	<div class="row" *ngFor="let map of question.group;let idquestion = index;">
 		<div class="col-6">
 			<div class="alert alert-primary" role="alert">
-				<div [innerHTML]="itemmap"></div>
+				<div [innerHTML]="map"></div>
 			</div>
 		</div>
 		<div class="col-6">
 			<input
-				type="text"
-				placeholder="Coloca tu respuesta"
-				class="form-control"
-				#answer
-				>
+			type="text"
+			placeholder="Escribe tu respuesta"
+			class="form-control"
+			#answer
+			(blur)="getUserResponse(answer.value, idquestion)"
+			>
 		</div>
 	</div>
 </div>

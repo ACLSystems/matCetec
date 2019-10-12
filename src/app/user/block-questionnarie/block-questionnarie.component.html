@@ -27,30 +27,53 @@
 				<span *ngIf="question.help">- {{question.help}}</span>
 			</h4>
 			<h4 *ngIf="!question.label">
-				<i class="material-icons vertical-align-middle padding-bottom-3">help</i>
+				<i
+					class="material-icons vertical-align-middle padding-bottom-3"
+					[ngClass]="{'text-success': questionsAnswered[questionNumber]>0}"
+					>help</i>
 				Pregunta {{questionNumber+1}}
 				<span *ngIf="question.help">- {{question.help}}</span>
 			</h4>
-		</div>
-		<div class="card-body">
 			<!--Para los headers de las preguntas-->
 			<div *ngIf="question.header">
 				<div [innerHTML]="question.header"></div>
 			</div>
 			<!--  -->
-			<!--Contenido o texto adicional de la pregunta-->
-			<div [innerHTML]="question.text"></div>
-			<!--  -->
-			<!--Seccion para el tipo de respuesta en optativas-->
-			<div *ngIf="question.type == 'option'" style="margin-top:15px;">
-				<app-option
-					[question]="question"
-					[questionNumber]="questionNumber"
-					></app-option>
+		</div>
+		<div class="card-body">
+			<!--Contenido o texto de la pregunta-->
+			<div
+				[innerHTML]="question.text"
+				*ngIf="question.type != 'option' && question.text"
+				>
 			</div>
 			<!--  -->
+			<!--Seccion para el tipo de respuesta en optativas-->
+			<div *ngIf="question.type == 'option'">
+				<div class="row">
+					<div class="col">
+						<div
+							*ngIf="question.type == 'option' && question.text"
+							[innerHTML]="question.text"
+							>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col" style="margin-top:15px;">
+						<app-option
+							[question]="question"
+							[questionNumber]="questionNumber"
+							></app-option>
+					</div>
+				</div>
+			</div>
+			<!-- <div *ngIf="question.type == 'option'" style="margin-top:15px;">
+
+			</div> -->
+			<!--  -->
 			<!--Seccion para el tipo de preguntas map-->
-			<div *ngIf="question.type == 'map'" style="margin-top:15px;">
+			<div *ngIf="question.type == 'map'">
 				<app-map
 					[question]="question"
 					[questionNumber]="questionNumber"
@@ -76,6 +99,15 @@
 				</app-order>
 			</div>
 			<!---->
+			<!--Seccion para el tipo de respuesta en true o false-->
+			<div *ngIf="question.type == 'tf'" style="margin-top:15px;">
+				<app-tf
+					[question]="question"
+					[questionNumber]="questionNumber"
+				>
+				</app-tf>
+			</div>
+			<!--  -->
 		</div>
 		<div class="card-footer" *ngIf="question.footer">
 			<!--Para las preguntas que tengan pie de pagina-->
