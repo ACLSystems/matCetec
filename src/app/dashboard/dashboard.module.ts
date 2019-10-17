@@ -10,10 +10,13 @@ import { AccesoriesModule } from '@shared/accesories/accesories.module';
 import { DashboardComponent } from './dashboard.component';
 import { DemoComponent } from './demo/demo.component';
 
+import { BlockCopyPasteDirective } from '@shared/directives/protect.directive';
+
 @NgModule({
   declarations: [
 		DashboardComponent,
-		DemoComponent
+		DemoComponent,
+		BlockCopyPasteDirective
 	],
   imports: [
     CommonModule,

@@ -16,7 +16,23 @@
   </div>
 </div>
 
-<div class="container-fluid" *ngIf="questionnarie.type=='quiz'">
+<div class="container-fluid" *ngIf="hideQuiz">
+	Ya has realizado este examen previamente sacando una calificación de <b [ngClass]="{'text-success':blockGrade>=70,'text-danger':blockGrade<70}">{{blockGrade}}</b>.
+</div>
+<div class="container-fluid" *ngIf="hideQuiz && questionnarie.maxAttempts > attempts">
+	Todavía tienes intentos si deseas mejorar tu calificación.<br>
+	<button
+		class="btn btn-primary"
+		type="button"
+		name="button"
+		(click)="attemptQuiz();"
+		>Deseo realizar nuevamente el cuestionario</button>
+</div>
+
+<div
+	class="container-fluid"
+	*ngIf="questionnarie.type=='quiz' &&
+	 questionnarie.maxAttempts > attempts && !hideQuiz">
 	<div class="card"
 		*ngFor="let question of questionnarie.questions; let questionNumber = index;"
 		>
@@ -131,7 +147,7 @@
 <button mat-raised-button
 	class="btn btn-sm btn-raised btn-danger"
 	(click)="goExam()"
-	*ngIf="questionnarie.type!='quiz'"
+	*ngIf="questionnarie.type!='quiz' && questionnarie.maxAttempts > attempts"
 	>
 	Lanza Examen
 </button>

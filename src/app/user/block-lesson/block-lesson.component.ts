@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Block } from '@shared/types/block.type';
 
 @Component({
@@ -6,7 +6,7 @@ import { Block } from '@shared/types/block.type';
   templateUrl: './block-lesson.component.html',
   styleUrls: ['./block-lesson.component.scss'],
 })
-export class BlockLessonComponent implements OnInit {
+export class BlockLessonComponent implements OnInit, AfterViewInit {
 
 	@Input() blockData:Block;
 	@Input() groupid: string;
@@ -20,5 +20,19 @@ export class BlockLessonComponent implements OnInit {
 		// console.log('blockLesson');
 		// console.log(this.blockData);
   }
+
+	ngAfterViewInit() {
+		var x = Array.from(document.getElementsByTagName("img"));
+		if(x.length > 0) {
+			x.forEach(img =>{
+				// console.log(img.src);
+				if(!img.src.includes('localhost')) {
+					// console.log(img.src);
+					// console.log(img.id);
+					// img.classList.add('bg-primary');
+				}
+			})
+		}
+	}
 
 }

@@ -1,4 +1,4 @@
-<div class="main-content">
+<div class="main-content non-printable">
 	<div *ngIf="loading" class="text-center">
 		<app-loading-spinner></app-loading-spinner>
 	</div>
@@ -40,13 +40,42 @@
 								Autor: <span class="text-primary">{{group.course.author}}</span>
 								<div *ngIf="group.groupType=='self-paced'" class="text-primary">Curso sin tutor</div>
 								<div *ngIf="group.groupType!='self-paced'" class="text-primary">Instructor: {{group.instructor.person.name}} {{group.instructor.person.fatherName}}</div>
-							</div>
-							<div [class]="track ? 'col-sm-6 col-md-6' : 'col-sm-5 col-md-6'">
-								Avance del curso: <b
-								[ngClass]="{'text-success':track>=60,'text-warning':track>=30 && track<60,'text-danger':track<30}">{{track}}%</b>
-								<br>
 								Categorías: <span class="text-primary">{{group.course.categories.join(', ')}}</span><br>
 								Palabras de Búsqueda: <span class="text-primary">{{group.course.keywords.join(', ')}}</span><br>
+							</div>
+							<div [class]="track ? 'col-sm-6 col-md-6' : 'col-sm-5 col-md-6'">
+								<div class="row bg-light">
+									<div class="col">Avance del curso: <span
+										[ngClass]="{'text-success':track>=60,'text-warning':track>=30 && track<60,'text-danger':track<30}">
+										{{track}}%</span></div>
+									<div class="col">
+										Calificación: <span
+										[ngClass]="{'text-success':finalGrade>=group.minGrade,'text-danger':finalGrade<group.minGrade}">
+										{{finalGrade | number: '1.2-2'}}</span><br>
+										<small
+											class="text-primary pointme"
+											(click)="goGrades();"
+											>
+											Mis calificaciones
+										</small>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
+										<div
+										*ngIf="group.myStatus === 'pending'"
+										>
+											<button mat-raised-button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#certificateModal">
+												Obtener Constancia
+											</button>
+										</div>
+										<span class="text-success"
+										*ngIf="group.myStatus === 'active'"
+										>
+										Cuenta Activa
+										</span>
+									</div>
+								</div>
 							</div>
 							<div class="col-sm-2" *ngIf="!track">
 								<button
@@ -111,6 +140,11 @@
 															<small>Lección</small>
 														</a>
 													</th>
+													<th>
+														<a class="pointhelp" (click)="gradeHelp()">
+															<small>Calificación</small>
+														</a>
+													</th>
 												</thead>
 												<tbody>
 													<tr *ngIf="!track && section.section == sections[0].section">
@@ -124,7 +158,7 @@
 															</button>
 														</td>
 													</tr>
-													<tr *ngFor="let block of group.blocks | slice:section.number + 1; let i of index; let firstBlock = first;" (click)="getBlock(block.id)" [class.pointme]="track">
+													<tr *ngFor="let block of group.blocks | slice:section.number + 1:section.last; let i of index; let firstBlock = first;" (click)="getBlock(block.id)" [class.pointme]="track">
 														<!-- Número de sección/lección -->
 														<td *ngIf="block.section == section.section && block.number != 0">
 															<span [class.text-success]="block.track">{{block.section}}.{{block.number}}</span>
@@ -167,6 +201,9 @@
 																Finaliza: {{block.endDate | date}}
 															</span>
 														</td>
+														<td>
+
+														</td>
 													</tr>
 												</tbody>
 											</table>
@@ -182,3 +219,34 @@
 	</div>
 </div>
 <app-shared-footer></app-shared-footer>
+
+<!-- Modal para constancia-->
+<div class="modal fade printable" id="certificateModal" tabindex="-1" role="dialog" aria-labelledby="certificateModal" aria-hidden="true" *ngIf="!loading">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Obtener Constancia</h4>
+				<button mat-button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Para obtener tu constancia realiza un pago por la cantidad de </p>
+				<div class="alert alert-primary">
+					<h2 style="text-align:center">$360.00 MXN</h2>
+				</div>
+				<p>En Efectivo: en cualquier sucursal de BBVA a la cuenta: <b>1234567890</b><br><br>Transferencia electrónica: BBVA con CLABE interbancaria: <b>1234567890123456</b><br><br><span class="text-danger" style="text-justify: auto">IMPORTANTE: Utiliza el siguiente número de folio como <b>CONCEPTO DE PAGO</b> en tu depósito o transferencia. De no seguir estas instrucciones no será posible rastrear tu pago.</span></p>
+				<div class="alert alert-primary">
+					<h3 style="text-align:center">{{group.folio}}</h3>
+				</div>
+				<p style="text-justify: auto">Tu pago se verá reflejado en un máximo de 3 días laborales. Cuando el pago esté validado se te enviará un correo para notificarte. El estado se verá reflejado como <span class="text-success">Activo</span> y podrás generar tu constancia.
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button mat-raised-button type="button" class="btn btn-primary btn-link" (click)="print();">Imprimir</button>
+				<button mat-raised-button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  Fin modal para constancia -->

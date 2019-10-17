@@ -114,6 +114,50 @@ export interface Block {
 	maxGrade?: number,
 	lastAttempt?: string | Date,
 	track?: number,
+	blockGrade?: number,
+	blockGradedQ?: boolean,
+	blockGradedT?: boolean,
 	attempts?: number,
 	tasks?: Task[]
+}
+
+export interface BlockGrade {
+	blockId: string,
+	blockNumber: number,
+	blockOrder?: number,
+	blockSection: number,
+	blockTitle: string,
+	blockType: string,
+	blockW: number,
+	grade: number
+}
+
+export interface Grade {
+	beginDate: DataViewConstructor,
+	beginDateSpa: string,
+	blocks: BlockGrade[],
+	certificateActive: boolean,
+	certificateNumber: string,
+	certificateTutor: boolean,
+	course: string,
+	courseDurUnits: string,
+	courseDuration: number,
+	duration: string,
+	durationUnits: string,
+	endDate: Date,
+	endDateSpa: string
+	finalGrade: number,
+	folio: string,
+	folioStatus: string,
+	groupType: string,
+	groupid: string,
+	minGrade: number,
+	minTrack: string,
+	name: string,
+	pass: boolean,
+	passDate: Date,
+	passDateSpa: string,
+	rosterid: string,
+	status: string,
+	track: string
 }

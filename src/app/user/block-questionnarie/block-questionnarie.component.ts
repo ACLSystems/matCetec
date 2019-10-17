@@ -31,6 +31,11 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 	totalAnswered: number = 0;
 	totalQuestions: number = 0;
 	totalQuestionsAnswered: number = 0;
+	blockGrade: number;
+	blockGradedQ: boolean;
+	blockGradedT: boolean;
+	hideQuiz: boolean;
+
 
 
 	constructor(
@@ -49,9 +54,14 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 		// console.log(this.blockData);
 		this.attempts = this.blockData.attempts;
 		this.questionnarie = this.blockData.questionnarie;
+		this.blockGrade = this.blockData.blockGrade;
+		this.blockGradedQ = this.blockData.blockGradedQ;
+		if(this.blockGradedQ) {
+			this.hideQuiz = true;
+		}
 		// console.log('blockQuestionnarie');
 		// console.log(this.questionnarie);
-		console.log(this.blockid);
+		// console.log(this.blockid);
 		this.resetPoints();
 		this.getMaxPoints();
 	}
@@ -81,7 +91,14 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 			html += htmlWarning;
 		}
 		html += htmlFooter;
-
+		if(this.totalQuestionsAnswered == 0) {
+			Swal.fire({
+				type: 'error',
+				title: 'No has respondido ninguna pregunta',
+				text: 'Solo podemos enviar cuestionarios con al menos una pregunta respondida'
+			});
+			return;
+		}
 		Swal.fire({
 			html: html,
 			showCancelButton: true,
@@ -123,6 +140,7 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 						responseBody +
 						responseFooter
 					});
+					this.hideQuiz = true;
 				}, error => {
 					console.log(error);
 				});
@@ -216,6 +234,21 @@ export class BlockQuestionnarieComponent implements OnInit, OnDestroy {
 		// console.log(`Points ${this.totalAnswered} / ${this.totalPoints}. Questions responded: ${this.totalQuestionsAnswered} / ${this.totalQuestions}`);
 		// console.log(this.responses);
 		// console.log(sumPoints);
+	}
+
+	attemptQuiz () {
+		Swal.fire({
+			text: 'Se tomará como intento si eliges continuar',
+			showCancelButton: true,
+			confirmButtonText: 'Continuar',
+			cancelButtonText: 'Cancelar',
+			cancelButtonColor: '#d33'
+		}).then((result) => {
+			if(result.value) {
+				this.hideQuiz = false;
+				this.attempts++;
+			}
+		})
 	}
 
 }

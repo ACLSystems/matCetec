@@ -16,10 +16,16 @@
 		<div class="card-title">
 			<div class="row">
 				<div class="col">
-					<span *ngIf="blockData.blockNumber==0">
+					<i class="material-icons text-success" *ngIf="track">visibility</i>
+					<span
+						*ngIf="blockData.blockNumber==0"
+						[ngClass]="{'text-success': track}"
+						>
 						Unidad {{blockData.blockSection}}
 					</span>
-					<span *ngIf="blockData.blockNumber!=0">
+					<span *ngIf="blockData.blockNumber!=0"
+						[ngClass]="{'text-success': track}"
+						>
 						Lección {{blockData.blockSection}}.{{blockData.blockNumber}}
 					</span>
 				</div>

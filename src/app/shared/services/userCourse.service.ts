@@ -49,7 +49,7 @@ export class UserCourseService {
 	funcion para mostrar el listado del temario en base al track
 	*/
 
-	showBlocksTrack(id:string):Observable<any>{
+	myGroup(id:string):Observable<any>{
 		const httpOptions = {
 			headers: JSONHeaders.set(
 				'Authorization',
@@ -100,7 +100,7 @@ export class UserCourseService {
   */
   setAttempt(
 		groupid: string,
-		blockid: string, 
+		blockid: string,
 		answers: any[],
 		grade: number
 	):Observable<any>{

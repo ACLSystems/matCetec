@@ -221,6 +221,8 @@ export class NavbarComponent implements OnInit {
 						} else {
 							return 'Panel'
 						}
+					} else if(titlee.includes('/user/progress')) {
+						return 'Progreso del curso ' + currentCourse.course
 					} else if(titlee.includes('/user/block')) {
 						return currentCourse.course
 					} else {

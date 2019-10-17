@@ -14,3 +14,17 @@
 .pointhelp {
 	cursor: help;
 }
+
+.modal-dialog {
+	width: 360px;
+}
+
+@media print
+{
+	.non-printable {
+		display: none;
+	}
+	.printable {
+		display: block;
+	}
+}

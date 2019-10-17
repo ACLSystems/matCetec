@@ -18,7 +18,7 @@ export class BlockComponent implements OnInit {
 	blockid: string;
 	loading: boolean;
 	blockData: Block;
-	track: number;
+
 
   constructor(
 		private activatedRoute: ActivatedRoute,
@@ -44,11 +44,15 @@ export class BlockComponent implements OnInit {
 			if(data) {
 				this.blockData = data.message;
 				this.blockid = blockid;
-				this.track = this.blockData.track;
-				this.loading = false;
-				window.scroll(0,0)
+
+				if(this.blockData.blockType === 'task') {
+					// this.blockGrade = this.blockData.blockGrade;
+					// this.blockGradedT = this.blockData.blockGradedT;
+				}
 				// console.log('block')
 				// console.log(this.blockData);
+				this.loading = false;
+				window.scroll(0,0);
 			}
 		})
 	}

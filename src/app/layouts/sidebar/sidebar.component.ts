@@ -168,7 +168,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
 						subpath: myCurrentCourseData.groupid,
 						title: 'Temario',
 						ab: 'TM'},
-					{path: 'progress', title: 'Mi progreso', ab: 'MP'},
+					{	
+						path: 'progress',
+						subpath: myCurrentCourseData.groupid,
+						title: 'Mi progreso',
+						ab: 'MP'
+					},
 					{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
 					{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
 					{path: 'announcements', title: 'Avisos del curso', ab: 'AC'},

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -62,6 +62,38 @@ export class DashboardComponent implements OnInit {
 		this.getCourseUser();
 		this.currentCourse = JSON.parse(localStorage.getItem('currentCourse'));
 	}
+	//
+	// Para prevenir copia y descarga
+	//
+	// @HostListener('copy', ['$event'])
+	// blockCopy(e: KeyboardEvent) {
+	// 	e.preventDefault();
+	// 	console.log('No puedes copiar!')
+	// }
+	//
+	// @HostListener('cut', ['$event'])
+	// blockCut(e: KeyboardEvent) {
+	// 	e.preventDefault();
+	// 	console.log('No puedes cortar!')
+	// }
+	//
+	// @HostListener('paste', ['$event'])
+	// blockPaste(e: KeyboardEvent) {
+	// 	e.preventDefault();
+	// 	console.log('No puedes pegar!')
+	// }
+	//
+	// @HostListener('select', ['$event'])
+	// blockSelect(e: MouseEvent){
+	// 	e.preventDefault();
+	// 	console.log('No puedes seleccionar nada!!!')
+	// }
+	//
+	// @HostListener('contextMenu', ['$event'])
+	// blockContextMenu(e: MouseEvent){
+	// 	e.preventDefault();
+	// 	console.log('No puedes usar el botón secundario!!!')
+	// }
 
 	async getCourseUser() {
 		const minDays = 14;
@@ -112,7 +144,7 @@ export class DashboardComponent implements OnInit {
 			});
 			this.messageNewUser = false;
 			this.loading = false;
-			//console.log(this.courseList)
+			// console.log(this.courseList)
 			// this.drawPieCourses();
 		}, error => {
 			if (error._body.includes('"message":"No groups found"')) {

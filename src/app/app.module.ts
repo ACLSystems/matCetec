@@ -48,6 +48,8 @@ import { SidebarModule } from '@sidebar/sidebar.module';
 import { NavbarModule } from '@navbar/navbar.module';
 import { AccesoriesModule } from '@shared/accesories/accesories.module';
 
+//  Import Directivas
+
 // Import componentes
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
@@ -109,6 +111,8 @@ export class MaterialModule {}
 		LoggedComponent,
 		TestComponent
   ],
+	exports: [
+	],
   imports: [
 		CommonModule,
 		BrowserAnimationsModule,

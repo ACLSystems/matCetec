@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UsergroupsComponent } from './usergroups/usergroups.component';
 import { CourseMainComponent } from './courseMain/courseMain.component';
+import { ProgressComponent } from './progress/progress.component';
 import { BlockComponent } from './block/block.component';
 
 const userRoutes: Routes = [
@@ -10,8 +10,8 @@ const userRoutes: Routes = [
 		path: '',
 		children: [
 			{
-				path: 'groups',
-				component: UsergroupsComponent
+				path: 'progress/:groupid',
+				component: ProgressComponent
 			}
 		]
 	},{

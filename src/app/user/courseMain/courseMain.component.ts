@@ -34,6 +34,7 @@ export class CourseMainComponent implements OnInit {
 	sections: Section[] = [];
 	courseStarted: boolean = false;
 	track: number = 0;
+	finalGrade: number;
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -53,7 +54,7 @@ export class CourseMainComponent implements OnInit {
 	}
 
 	getGroup() {
-		this.userCourseService.showBlocksTrack(this.groupid).subscribe(data => {
+		this.userCourseService.myGroup(this.groupid).subscribe(data => {
 			const notFoundMessage = `Group with id -${this.groupid}- not found`;
 			if(data.message && data.message == notFoundMessage) {
 				Swal.fire({
@@ -66,13 +67,22 @@ export class CourseMainComponent implements OnInit {
 				this.router.navigate(['/dashboard']);
 			} else {
 				this.group = data.message;
-				// console.log(this.group);
+				console.log(this.group);
 				this.sections = getUniques(this.group.blocks);
 				// console.log(this.sections);
 				this.track = parseInt(this.group.track.split('%')[0]);
 				//console.log(this.track);
+				this.finalGrade = this.group.finalGrade ? this.group.finalGrade : 0;
 				this.loading = false;
 			}
+		}, error => {
+			Swal.fire({
+				type: 'error',
+				title: 'Error de comunicación con el servidor',
+				text: 'El servidor nos respondió con un error. Puede ser temporal, por lo que te sugerimos intentar nuevamente en un minuto.',
+				footer: 'En caso de que este error se presente continuamente, favor de reportarlo a soporte@soporte con este número de error: 1234'
+			});
+			console.log(error);
 		});
 	}
 
@@ -124,14 +134,42 @@ export class CourseMainComponent implements OnInit {
 			'<span class="text-danger">No puedes ir directo a las lecciones de color negro.</span><br><span class="text-success">Pero sí puedes ir a las lecciones ya vistas en color verde.</span><br>Tienes que ir una por una.<br> Para iniciar el curso, presiona el botón <button type="button" class="btn btn-primary btn-sm">Iniciar curso</button>.'
 		});
 	}
+
+	gradeHelp() {
+		Swal.fire({
+			title: 'Columna Calificación',
+			type: 'info',
+			html: 'Si la lección tiene un examen o tarea que deba calificarse aparecerá la calificación en esta columna.'
+		});
+	}
+
+	print() {
+		window.print();
+	}
+
+	goGrades() {
+		this.router.navigate(['/user/progress', this.group.groupid]);
+	}
 }
 
 function getUniques(oldArray:any) {
+	// console.log(oldArray);
 	var newArray = [];
+	var sectionPaired = false;
+	if(oldArray[0] && oldArray[0].section === 0) {
+		sectionPaired = true;
+	}
 	var lastSection = -1;
 	var i = 0;
 	oldArray.forEach((item:any) => {
 		if(item.section != lastSection) {
+			if(lastSection > -1) {
+				if(sectionPaired){
+					newArray[lastSection].last = i;
+				} else {
+					newArray[lastSection - 1].last = i;
+				}
+			}
 			lastSection = item.section;
 			newArray.push({
 				section: lastSection,
@@ -142,6 +180,13 @@ function getUniques(oldArray:any) {
 		}
 		i++;
 	});
+	// console.log(lastSection);
+	// console.log(newArray);
+	if(sectionPaired){
+		newArray[lastSection].last = oldArray.length;
+	} else {
+		newArray[lastSection - 1].last = oldArray.length;
+	}
 	//console.log(newArray);
 	return newArray;
 }
