@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs';
 import PerfectScrollbar from 'perfect-scrollbar';
 
 import { CurrentCourse } from '@shared/types/course.type';
-
 import { CurrentCourseService } from '@shared/services/currentcourse.service';
+import { UserService } from '@shared/services/user.service';
 
 declare const $: any;
 
@@ -90,6 +90,7 @@ export const ROUTES: RouteInfo [] = myCurrentCourseData ?
 	[...ROUTES_1, myCurrentCourse] :
 	[...ROUTES_1]
 
+
 @Component({
 	selector: 'app-sidebar-cmp',
 	templateUrl: './sidebar.component.html',
@@ -101,6 +102,7 @@ export const ROUTES: RouteInfo [] = myCurrentCourseData ?
 export class SidebarComponent implements OnInit, OnDestroy {
 
 	subscription: Subscription;
+	identity: any;
 
 	public menuItems: any[];
 	ps: any;
@@ -112,7 +114,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
 	};
 
 	constructor(
-		private currentCourseService: CurrentCourseService
+		private currentCourseService: CurrentCourseService,
+		private userService: UserService
 	) {
 
 	}
@@ -130,6 +133,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
 				this.refreshCourseData(data);
 			}
 		);
+		this.identity = this.userService.getidentity();
+		console.log(this.identity);
 	}
 
 	ngOnDestroy() {
