@@ -51,8 +51,8 @@ export class BlockComponent implements OnInit {
 				}
 				// console.log('block')
 				// console.log(this.blockData);
-				this.loading = false;
 				window.scroll(0,0);
+				this.loading = false;
 			}
 		})
 	}

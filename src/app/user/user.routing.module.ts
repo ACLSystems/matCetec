@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CourseMainComponent } from './courseMain/courseMain.component';
 import { ProgressComponent } from './progress/progress.component';
 import { BlockComponent } from './block/block.component';
+import { SupportComponent } from './support/support.component';
 
 const userRoutes: Routes = [
 	{
@@ -20,6 +21,14 @@ const userRoutes: Routes = [
 			{
 				path: 'content/:groupid',
 				component: CourseMainComponent
+			}
+		]
+	},{
+		path: '',
+		children: [
+			{
+				path: 'support/:groupid',
+				component: SupportComponent
 			}
 		]
 	},{

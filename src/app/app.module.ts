@@ -6,6 +6,14 @@ import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+// import { environment } from '@env/environment';
+
+const config: SocketIoConfig = {
+	url: 'https://apiadmincetec.sloppy.zone',
+	options: {}
+}
 
 // Import librerías Angular Material
 import {
@@ -125,7 +133,8 @@ export class MaterialModule {}
 		SidebarModule,
 		FixedpluginModule,
 		NavbarModule,
-		AccesoriesModule
+		AccesoriesModule,
+		SocketIoModule.forRoot(config)
   ],
 	providers: [
 		PublicService,

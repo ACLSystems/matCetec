@@ -4,6 +4,7 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeMX from '@angular/common/locales/es-MX';
 //import * as Chartist from 'chartist';
+import Swal from 'sweetalert2';
 
 import { CurrentCourse } from '@shared/types/course.type';
 
@@ -114,7 +115,7 @@ export class DashboardComponent implements OnInit {
 								diff = this.dateDiff(new Date(idmg.beginDate),today);
 								if(diff >= 0 && diff <= minDays){
 									this.events.push({
-										title: `Inicio del Curso ${idmg.course }`,
+										title: `Inicio del curso ${idmg.course }`,
 										start: idmg.beginDate,
 										end: idmg.endDate
 									});
@@ -147,9 +148,18 @@ export class DashboardComponent implements OnInit {
 			// console.log(this.courseList)
 			// this.drawPieCourses();
 		}, error => {
-			if (error._body.includes('"message":"No groups found"')) {
+			if(error.error && error.error.errMessage && error.error.errMessage ==="invalid signature") {
+				Swal.fire({
+					title: 'Necesitas ingresar al sistema nuevamente',
+					html: error.error.message,
+					type: 'error',
+					confirmButtonText: 'Ok',
+					confirmButtonClass: 'btn btn-danger'
+				});
+				this.router.navigate(['/pages/login']);
+			} else if (error._body.includes('"message":"No groups found"')) {
+				this.messageNewUser = error._body.includes('"message":"No groups found"');
 			}
-			this.messageNewUser = error._body.includes('"message":"No groups found"');
 			this.loading = false;
 		});
 	}

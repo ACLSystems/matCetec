@@ -33,6 +33,7 @@ export class ProgressComponent implements OnInit {
 	totalPercentage: number;
 	finalGrade: number;
 	width: number;
+	display: any[] = [];
 
 	startAnimationForBarChart(chart: any) {
 			let seq2: any, delays2: any, durations2: any;
@@ -102,11 +103,11 @@ export class ProgressComponent implements OnInit {
 	}
 
 	displayChart() {
-		const dataChartGrades: dataChart= {
+		var dataChartGrades: dataChart= {
 			labels: [],
 			series: []
 		};
-		const dataChartRubric: dataChart = {
+		var dataChartRubric: dataChart = {
 			labels: [],
 			series: []
 		};
@@ -115,7 +116,7 @@ export class ProgressComponent implements OnInit {
 			grades.forEach(grade => {
 				if(grade.blockNumber === 0) {
 					dataChartGrades.labels.push(grade.blockTitle);
-					dataChartRubric.labels.push(grade.blockTitle);
+					dataChartRubric.labels.push(grade.blockSection + '');
 					dataChartGrades.series.push(grade.grade);
 					dataChartRubric.series.push(grade.blockW);
 				}
@@ -152,7 +153,7 @@ export class ProgressComponent implements OnInit {
 				});
 			}
 		}
-		const newDataChartRubric = {
+		var newDataChartRubric = {
 			series: [],
 			labels: []
 		}
@@ -161,14 +162,13 @@ export class ProgressComponent implements OnInit {
 			newDataChartRubric.labels.push(label.label);
 		})
 		// console.log(counts);
-		// console.log(dataChartGrades);
 		// console.log(dataChartRubric);
 		// console.log(newDataChartRubric);
 		this.rubricData = newDataChartRubric;
 		// const dataChartTest = {
-		// 	labels: ['U1', 'U2', 'U3','U4', 'U5', 'U6','U7', 'U8', 'U9','U10', 'U11', 'U12'],
+		// 	labels: ['U1', 'U2', 'U3','U4', 'U5', 'U6','U7', 'U8', 'U9','U10', 'U11'],
 		// 	series: [
-		// 		[100,95,80,93,100,64,0,0,0,0,0,0]
+		// 		[7.40755555556,0,0,0,0,0,0,0,0,0,0]
 		// 	]
 		// };
 		const optionsChart = {
@@ -182,9 +182,10 @@ export class ProgressComponent implements OnInit {
 			chartPadding: {
 				top: 15,
 				right: 15,
-				bottom: 40,
+				bottom: 50,
 				left: 10
-			}
+			},
+			distributeSeries: true
 		};
 
 		const responsiveOptions: any = [
@@ -198,11 +199,34 @@ export class ProgressComponent implements OnInit {
 			}]
 		];
 
-		const chartGrades = new Chartist.Bar('#chart-grades', dataChartGrades,optionsChart, responsiveOptions);
+		// console.log(dataChartGrades);
+		const chartGrades = new Chartist.Bar('#chart-grades', dataChartGrades,optionsChart,responsiveOptions);
 		this.startAnimationForBarChart(chartGrades);
-		new Chartist.Pie('#chart-rubric',newDataChartRubric,{height: '230px'});
+		new Chartist.Pie('#chart-rubric',dataChartRubric,
+			{
+				startAngle: 180,
+				height: '230px',
+				showLabel: true
+			});
 
+		// setTimeout(() => {
+		// 	const pie = document.getElementsByClassName('ct-label');
+		// 	console.log(pie);
+		// 	for(let i = 0; i < pie.length; i++) {
+		// 		if(pie[i].nodeName == 'text') {
+		// 			pie[i].removeAttribute('fill');
+		// 		}
+		// 	}
+		// }, 500);
 
+	}
+
+	getBlock(blockid: string, track?: boolean, force?: boolean) {
+		const courseid = this.grade.courseId;
+		const groupid = this.groupid;
+		if(track || force) {
+			this.router.navigate(['/user/block', courseid, groupid, blockid]);
+		}
 	}
 
 	private generateDisplayValues(grades: any) {
@@ -210,17 +234,67 @@ export class ProgressComponent implements OnInit {
 		this.totalPercentage = 0;
 		this.finalGrade = 0;
 		grades.blocks.forEach((value: any) => {
-			if(value.blockType === 'questionnarie') {
-				value.typeDisplay = 'Examen/Quiz';
-			} else if(value.blockType === 'task') {
-				value.typeDisplay = 'Actividad/Tarea';
-			} else if(value.blockNumber === 0) {
+			// if(value.blockType === 'questionnarie') {
+			// 	value.typeDisplay = 'Examen/Quiz';
+			// } else if(value.blockType === 'task') {
+			// 	value.typeDisplay = 'Actividad/Tarea';
+			// } else {
+			// 	value.typeDisplay = value.blockType;
+			// }
+
+			if(value.blockNumber === 0) {
 				value.typeDisplay = 'Sección';
 				this.totalW += value.blockW;
+				let found = this.display.findIndex(obj => obj.section === value.blockSection);
+				if(found > -1) {
+					this.display[found].grade = value.grade;
+					this.display[found].w = value.blockW;
+					this.display[found].title = value.blockTitle;
+					this.display[found].track = (value.track === 100) ? true : false;
+				} else {
+					this.display.push({
+						id: value.blockId,
+						section: value.blockSection,
+						grade: value.grade,
+						w: value.blockW,
+						title: value.blockTitle,
+						track: (value.track === 100) ? true : false,
+						lessons: []
+					})
+				}
 			} else {
-				value.typeDisplay = value.blockType;
+				let found = this.display.findIndex(obj => obj.section === value.blockSection);
+				if(found > -1) {
+					let foundLesson = this.display[found].lessons.findIndex((less:any) => less.number === value.blockNumber);
+					if(foundLesson > -1) {
+						this.display[found].lessons[foundLesson].grade = value.grade;
+						this.display[found].lessons[foundLesson].w = value.blockW;
+						this.display[found].lessons[foundLesson].title = value.blockTitle;
+						this.display[found].lessons[foundLesson].type = value.blockType;
+						this.display[found].lessons[foundLesson].track = (value.track === 100) ? true : false;
+					} else {
+						this.display[found].lessons.push({
+							id: value.blockId,
+							number: value.blockNumber,
+							grade: value.grade,
+							w: value.blockW,
+							title: value.blockTitle,
+							type: value.blockType,
+							track: (value.track === 100) ? true : false
+						})
+					}
+				}
 			}
 		});
+		this.display.forEach(grade => {
+			let wSection = 0;
+			grade.lessons.forEach((lesson:any) => {
+				wSection += lesson.w;
+			});
+			grade.wSection = wSection;
+			grade.grade = grade.lessons.reduce((acc:any,curr:any) => acc + (curr.grade * curr.w / grade.wSection),0);
+		});
+		// console.log(this.display);
 		grades.blocks.forEach((value: any) => {
 			if(value.blockNumber === 0) {
 				this.totalPercentage += value.blockW / this.totalW;

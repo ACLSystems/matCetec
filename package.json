@@ -60,6 +60,7 @@
     "ng2-select": "^2.0.0",
     "ngx-avatar": "^3.7.0",
     "ngx-chips": "^2.0.2",
+    "ngx-socket-io": "^3.0.1",
     "ngx-timeago": "^1.0.2",
     "nouislider": "^14.0.2",
     "perfect-scrollbar": "^1.4.0",

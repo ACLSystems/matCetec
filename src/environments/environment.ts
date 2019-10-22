@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   url: 'https://apiadmincetec.sloppy.zone/',
+	// url: 'http://localhost:3050/',
   urlLibreta: 'http://localhost:4200/',
 	libreta_URI: 'http://cetec.superatemexico.com/#',
 	vendor: 'ACL Systems SA de CV',

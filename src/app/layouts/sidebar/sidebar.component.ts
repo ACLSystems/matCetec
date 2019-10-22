@@ -53,7 +53,7 @@ export const myCurrentCourse: RouteInfo = {
 	children: myCurrentCourseData ? [
 		{path: 'content', title: 'Temario', ab: 'TM'},
 		{path: 'progress', title: 'Mi progreso', ab: 'MP'},
-		{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
+		{path: 'support', title: 'Material de apoyo', ab: 'MA'},
 		{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
 		{path: 'announcements', title: 'Avisos del curso', ab: 'AC'},
 		{path: 'events', title: 'Eventos del curso', ab: 'EC'}
@@ -85,9 +85,10 @@ const ROUTES_2: RouteInfo[] = [{
 ];
 
 export const ROUTES: RouteInfo [] = myCurrentCourseData ?
-	[...ROUTES_1, myCurrentCourse, ...ROUTES_2] :
-	[...ROUTES_1, ...ROUTES_2]
-
+	// [...ROUTES_1, myCurrentCourse, ...ROUTES_2] :
+	// [...ROUTES_1, ...ROUTES_2]
+	[...ROUTES_1, myCurrentCourse] :
+	[...ROUTES_1]
 
 @Component({
 	selector: 'app-sidebar-cmp',
@@ -154,7 +155,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 		}
 		if(data) {
 			const myCurrentCourseData = data;
-			let contentPath = `content/${myCurrentCourseData.groupid}`;
+			// let contentPath = `content/${myCurrentCourseData.groupid}`;
 			// console.log(contentPath);
 			const myCurrentCourse: RouteInfo = {
 				path: myCurrentCourseData ? '/user' : '',
@@ -167,14 +168,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
 						path: 'content',
 						subpath: myCurrentCourseData.groupid,
 						title: 'Temario',
-						ab: 'TM'},
-					{	
+						ab: 'TM'
+					},{
 						path: 'progress',
 						subpath: myCurrentCourseData.groupid,
 						title: 'Mi progreso',
 						ab: 'MP'
+					},{
+						path: 'support',
+						title: 'Material de apoyo',
+						subpath: myCurrentCourseData.groupid,
+						ab: 'MA'
 					},
-					{path: 'resources', title: 'Material de apoyo', ab: 'MA'},
 					{path: 'forum', title: 'Foro de discusión', ab: 'FD'},
 					{path: 'announcements', title: 'Avisos del curso', ab: 'AC'},
 					{path: 'events', title: 'Eventos del curso', ab: 'EC'}

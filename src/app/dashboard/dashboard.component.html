@@ -284,8 +284,8 @@
 							<tbody>
 								<tr *ngFor="let event of events">
 									<td>{{event.title}}</td>
-									<td>{{event.start}}</td>
-									<td>{{event.end}}</td>
+									<td>{{event.start | date}}</td>
+									<td>{{event.end | date}}</td>
 								</tr>
 							</tbody>
 						</table>

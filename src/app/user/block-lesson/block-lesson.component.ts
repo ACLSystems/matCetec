@@ -2,24 +2,24 @@ import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Block } from '@shared/types/block.type';
 
 @Component({
-  selector: 'app-block-lesson',
-  templateUrl: './block-lesson.component.html',
-  styleUrls: ['./block-lesson.component.scss'],
+	selector: 'app-block-lesson',
+	templateUrl: './block-lesson.component.html',
+	styleUrls: ['./block-lesson.component.scss'],
 })
 export class BlockLessonComponent implements OnInit, AfterViewInit {
 
 	@Input() blockData:Block;
 	@Input() groupid: string;
 	@Input() blockid: string;
-	track: number;
+	// track: number;
 
-  constructor() { }
+	constructor() { }
 
-  ngOnInit() {
-		this.track = this.blockData.track;
+	ngOnInit() {
+		// this.track = this.blockData.track;
 		// console.log('blockLesson');
 		// console.log(this.blockData);
-  }
+	}
 
 	ngAfterViewInit() {
 		var x = Array.from(document.getElementsByTagName("img"));

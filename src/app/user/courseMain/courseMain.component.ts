@@ -9,6 +9,7 @@ import { UserCourseService } from '@shared/services/userCourse.service';
 import { UserService } from '@shared/services/user.service';
 import { DocsService } from './docs.service';
 import { WindowService } from '@shared/services/windowSize.service';
+import { CommService } from '@shared/services/comm.service';
 
 import { Section } from '@shared/types/section.type';
 
@@ -23,6 +24,7 @@ registerLocaleData(localeMX);
 		UserCourseService,
 		DocsService,
 		WindowService,
+		CommService,
 		{ provide: LOCALE_ID, useValue: 'es-MX'}
 	]
 })
@@ -39,7 +41,8 @@ export class CourseMainComponent implements OnInit {
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
-		private userCourseService: UserCourseService
+		private userCourseService: UserCourseService,
+		private commService: CommService
 	) {
 		this.loading = true;
 		this.activatedRoute.params.subscribe(params => {
@@ -51,6 +54,11 @@ export class CourseMainComponent implements OnInit {
 	ngOnInit() {
 		this.loading = true;
 		this.getGroup();
+		this.commService.sendMessage('hola');
+		this.commService.getMessage().subscribe(data => {
+			console.log(data);
+			this.commService.sendMessage('Cómo estás?');
+		});
 	}
 
 	getGroup() {
@@ -67,7 +75,7 @@ export class CourseMainComponent implements OnInit {
 				this.router.navigate(['/dashboard']);
 			} else {
 				this.group = data.message;
-				console.log(this.group);
+				// console.log(this.group);
 				this.sections = getUniques(this.group.blocks);
 				// console.log(this.sections);
 				this.track = parseInt(this.group.track.split('%')[0]);

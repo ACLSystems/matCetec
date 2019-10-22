@@ -140,6 +140,7 @@ export interface Grade {
 	certificateNumber: string,
 	certificateTutor: boolean,
 	course: string,
+	courseId: string,
 	courseDurUnits: string,
 	courseDuration: number,
 	duration: string,
